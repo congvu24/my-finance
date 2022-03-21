@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "10128751258",
+    "project_id": "myfinance-65f57",
+    "storage_bucket": "myfinance-65f57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10128751258:android:d94f2e461014fa6beabd23",
+        "android_client_info": {
+          "package_name": "com.myfinance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10128751258-u4opuvrltg33uhfgdoqqg8lq7g6phodq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIWgWEttCMelTBb6uLKa_sm3YcHyW7Ens"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10128751258-u4opuvrltg33uhfgdoqqg8lq7g6phodq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
