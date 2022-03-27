@@ -6,31 +6,49 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import { LOGO } from '../contants/Images';
-import { PRIMARY_COLOR } from '../contants/Colors';
+import {
+  BACKGROUND_COLOR,
+  PRIMARY_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 import HomeShortList from '../components/HomeShortList';
 import HomeOverview from '../components/HomeOverview';
 import HomeShortcut from '../components/HomeShortcut';
+import { removeLogin } from '../redux/reducer/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux';
 
-export default function HomeTab() {
+export default function HomeTab({ navigation }) {
+  const dispatch = useDispatch();
+  const signOut = () => dispatch(removeLogin());
+
+  const isLogged = useSelector<RootState>(state => state.user.isLogged);
+
+  useEffect(() => {
+    if (!isLogged) {
+      navigation.replace('Wellcome');
+    }
+  }, [isLogged]);
+
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.header}>
         <View>
           <Icon name="text" style={styles.drawerBtn} />
         </View>
-        <View style={styles.avatarWrap}>
+        <TouchableOpacity style={styles.avatarWrap} onPress={signOut}>
           <Image source={LOGO} style={styles.avatar} />
-        </View>
+        </TouchableOpacity>
       </View>
       <HomeOverview />
       <HomeShortcut />
       <View style={styles.history}>
-        <Text style={styles.historyText}>Lịch sử chi tiêu</Text>
+        <Text style={styles.historyText}>Transactions</Text>
         <TouchableOpacity>
-          <Text style={styles.historyAll}>Tất cả</Text>
+          <Text style={styles.historyAll}>See all</Text>
         </TouchableOpacity>
       </View>
       <HomeShortList />
@@ -40,7 +58,7 @@ export default function HomeTab() {
 
 const styles = StyleSheet.create({
   wrap: {
-    backgroundColor: 'white',
+    backgroundColor: BACKGROUND_COLOR,
     flex: 1,
   },
   header: {
@@ -67,13 +85,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   historyText: {
-    fontWeight: '600',
-    fontSize: 14,
-    color: 'black',
+    fontWeight: '500',
+    fontSize: 15,
+    color: WHITE_COLOR,
   },
   historyAll: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: PRIMARY_COLOR,
+    fontSize: 12,
+    fontWeight: '400',
+    color: WHITE_COLOR,
+    opacity: 0.5,
   },
 });

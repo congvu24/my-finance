@@ -1,7 +1,14 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { LOGO } from '../contants/Images';
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../contants/Colors';
+import {
+  GREEN_COLOR,
+  PRIMARY_COLOR,
+  RED_COLOR,
+  SECONDARY_BG_COLOR,
+  SECONDARY_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 
 export default function HomeShortList() {
   return (
@@ -12,10 +19,10 @@ export default function HomeShortList() {
         </View>
         <View style={styles.itemBody}>
           <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17:00 thứ 2, 20/11/2021</Text>
+          <Text style={styles.itemTime}>17 May 03:20pm</Text>
         </View>
         <View>
-          <Text style={styles.itemMoney}>+100.000 VND</Text>
+          <Text style={styles.itemMoney}>+ 100$</Text>
         </View>
       </View>
       <View style={styles.itemWrap}>
@@ -24,10 +31,10 @@ export default function HomeShortList() {
         </View>
         <View style={styles.itemBody}>
           <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17:00 thứ 2, 20/11/2021</Text>
+          <Text style={styles.itemTime}>17 May 03:20pm</Text>
         </View>
         <View>
-          <Text style={styles.itemMoneyRed}>-100.000 VND</Text>
+          <Text style={styles.itemMoneyRed}>+ $100</Text>
         </View>
       </View>
       <View style={styles.itemWrap}>
@@ -36,10 +43,10 @@ export default function HomeShortList() {
         </View>
         <View style={styles.itemBody}>
           <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17:00 thứ 2, 20/11/2021</Text>
+          <Text style={styles.itemTime}>17 May 03:20pm</Text>
         </View>
         <View>
-          <Text style={styles.itemMoneyRed}>-100.000 VND</Text>
+          <Text style={styles.itemMoneyRed}>- $100</Text>
         </View>
       </View>
     </View>
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 10,
     marginBottom: 10,
-    backgroundColor: SECONDARY_COLOR,
+    backgroundColor: SECONDARY_BG_COLOR,
   },
   itemAvatar: {
     width: 50,
@@ -77,22 +84,27 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   itemTime: {
     fontSize: 12,
-    fontWeight: '400',
+    fontWeight: '500',
+    color: WHITE_COLOR,
+    opacity: 0.5,
+    marginTop: 5,
   },
   itemMoney: {
     width: 100,
     fontSize: 14,
-    fontWeight: '600',
-    color: PRIMARY_COLOR,
+    fontWeight: '500',
+    color: GREEN_COLOR,
+    textAlign: 'right',
   },
   itemMoneyRed: {
     width: 100,
     fontSize: 14,
-    fontWeight: '600',
-    color: 'red',
+    fontWeight: '500',
+    color: RED_COLOR,
+    textAlign: 'right',
   },
 });

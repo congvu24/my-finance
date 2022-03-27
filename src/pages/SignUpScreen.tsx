@@ -6,19 +6,49 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  Button,
 } from 'react-native';
-import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { LOGO } from '../contants/Images';
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../contants/Colors';
+import _ from 'lodash';
+import {
+  BACKGROUND_COLOR,
+  GREEN_COLOR,
+  PRIMARY_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 import MyButton from '../components/Button';
 import HorizontalDivider from '../components/HorizontalDivider';
 import MyButtonWithIcon from '../components/ButtonWithIcon';
+import { Controller, useForm } from 'react-hook-form';
+import Toast from 'react-native-root-toast';
+import { RootState } from '../redux';
+import { signUp } from '../redux/reducer/user';
 
 export default function SignUpScreen({ navigation }) {
   const dispatch = useDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: '',
+      phone: '',
+      email: '',
+      password: '',
+    },
+  });
+  const isLogged = useSelector<RootState>(state => state.user.isLogged);
+
+  useEffect(() => {
+    if (isLogged) {
+      navigation.popToTop();
+      navigation.replace('Home');
+    }
+  }, [isLogged]);
 
   const passwordInputRef = useRef<TextInput>(null);
 
@@ -29,60 +59,143 @@ export default function SignUpScreen({ navigation }) {
   const goLogin = () => {
     navigation.replace('Login');
   };
+  const onSubmit = data => {
+    dispatch(signUp(data));
+  };
+
+  const onFinish = handleSubmit(onSubmit);
+
+  const handlePressSubmit = () => {
+    if (!_.isEmpty(errors)) {
+      Toast.show('Check your fields', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        textStyle: {
+          fontSize: 12,
+        },
+      });
+    } else {
+      onFinish();
+    }
+  };
 
   return (
     <SafeAreaView style={styles.wrap}>
       <TouchableOpacity onPress={onBack}>
-        <Icon name="arrowleft" size={20} />
+        <Icon name="arrowleft" size={20} color={WHITE_COLOR} />
       </TouchableOpacity>
       <View style={styles.logoWrap}>
         <Image source={LOGO} style={styles.logo} />
       </View>
       <View>
-        <Text style={styles.loginText}>Đăng ký</Text>
+        <Text style={styles.loginText}>Welcome to MyFinance</Text>
       </View>
       <View>
         <View style={styles.inputWrap}>
-          <TextInput
-            placeholder="Số điện thoại"
-            style={styles.input}
-            keyboardType="phone-pad"
-            onSubmitEditing={() => {
-              console.log('he');
-              passwordInputRef.current?.focus();
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              minLength: 3,
             }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="Name"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                style={styles.input}
+                placeholderTextColor={WHITE_COLOR}
+                value={value}
+              />
+            )}
+            name="name"
           />
-          <TextInput
-            ref={passwordInputRef}
-            placeholder="Mật khẩu"
-            style={styles.input}
-            secureTextEntry={true}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              minLength: 3,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="Phone"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                style={styles.input}
+                keyboardType="phone-pad"
+                value={value}
+                placeholderTextColor={WHITE_COLOR}
+              />
+            )}
+            name="phone"
+          />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              minLength: 3,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder="Email"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                style={styles.input}
+                keyboardType="email-address"
+                placeholderTextColor={WHITE_COLOR}
+                value={value}
+              />
+            )}
+            name="email"
+          />
+
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              minLength: 3,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                ref={passwordInputRef}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                placeholderTextColor={WHITE_COLOR}
+                placeholder="Password"
+                style={styles.input}
+                value={value}
+                secureTextEntry={true}
+              />
+            )}
+            name="password"
           />
         </View>
         <MyButton
-          text={'ĐĂNG KÝ'}
+          text={'SIGN UP'}
           style={{
             wrap: styles.loginBtn,
             text: {},
           }}
-          onPress={() => {}}
+          onPress={handlePressSubmit}
         />
         <View style={styles.subTextWrap}>
           <TouchableOpacity onPress={goLogin}>
-            <Text style={styles.subText}>Đăng nhập</Text>
+            <Text style={styles.subText}>Login</Text>
           </TouchableOpacity>
         </View>
         <HorizontalDivider
-          text="hoặc"
-          color={SECONDARY_COLOR}
-          textColor={PRIMARY_COLOR}
-          style={{ marginTop: 30 }}
+          text="or"
+          color={THIRD_BG_COLOR}
+          textColor={WHITE_COLOR}
+          style={{ marginTop: 30, opacity: 0.7 }}
         />
         <View style={styles.socialWrap}>
           <View style={styles.socialBtn}>
             <MyButtonWithIcon
               name="facebook"
-              text="Kết nối với Facebook"
+              text="Connect with facebook"
               style={{
                 wrap: { backgroundColor: '#3b5998' },
                 text: { fontSize: 12 },
@@ -93,7 +206,7 @@ export default function SignUpScreen({ navigation }) {
           <View style={styles.socialBtn}>
             <MyButtonWithIcon
               name="google"
-              text="Kết nối với Google"
+              text="Connect with Google"
               style={{
                 wrap: { backgroundColor: '#EA4335' },
                 text: { fontSize: 12 },
@@ -110,10 +223,11 @@ export default function SignUpScreen({ navigation }) {
 const styles = StyleSheet.create({
   wrap: {
     padding: 10,
+    backgroundColor: BACKGROUND_COLOR,
+    flex: 1,
   },
   logoWrap: {
     width: 100,
-    height: 100,
     display: 'flex',
     alignSelf: 'center',
     marginTop: 50,
@@ -127,7 +241,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '500',
-    color: PRIMARY_COLOR,
+    color: GREEN_COLOR,
     marginTop: 20,
   },
   inputWrap: {
@@ -135,8 +249,9 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: SECONDARY_COLOR,
+    borderBottomColor: THIRD_BG_COLOR,
     fontSize: 13,
+    color: WHITE_COLOR,
   },
   loginBtn: { borderRadius: 5, marginTop: 20 },
   subTextWrap: {

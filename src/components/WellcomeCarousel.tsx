@@ -6,7 +6,11 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { SECONDARY_COLOR } from '../contants/Colors';
+import {
+  SECONDARY_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 export default function WellcomeCarousel() {
@@ -16,21 +20,26 @@ export default function WellcomeCarousel() {
   const _renderItem = ({ item, index }) => {
     return (
       <View style={styles.slide} key={index}>
-        <Image
-          source={require('../images/demo_slide_image.jpeg')}
-          style={styles.image}
-        />
+        <Image source={item.image} style={styles.image} />
         <Text style={styles.slideText}>{item.title}</Text>
       </View>
     );
   };
 
   const entries = [
-    { title: 'dasd' },
-    { title: 'goood' },
-    { title: 'goood' },
-    { title: 'goood' },
-    { title: 'goood' },
+    { title: 'Realtime chart', image: require('../images/slide_chart1.png') },
+    {
+      title: 'Record all activites',
+      image: require('../images/slide_chart4.png'),
+    },
+    {
+      title: 'Variety of investment',
+      image: require('../images/slide_chart2.png'),
+    },
+    {
+      title: 'Manage wallets by yourself',
+      image: require('../images/slide_chart3.png'),
+    },
   ];
 
   const width = useWindowDimensions().width;
@@ -68,23 +77,26 @@ const styles = StyleSheet.create({
   slide: {
     // backgroundColor: 'blue',
     height: 400,
+    padding: 10
   },
   slideText: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '500',
     textAlign: 'center',
-    color: 'black',
+    marginTop: 20,
+    color: WHITE_COLOR,
   },
   dotStyle: {
     width: 10,
     height: 10,
     borderRadius: 5,
     marginHorizontal: 8,
-    backgroundColor: SECONDARY_COLOR,
+    backgroundColor: THIRD_BG_COLOR,
   },
   image: {
     width: '100%',
     height: undefined,
     aspectRatio: 1,
+    resizeMode: 'contain',
   },
 });

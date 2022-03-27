@@ -32,7 +32,7 @@ export default function InvestTab({ navigation }) {
   const width = useWindowDimensions().width;
 
   const goToAddInvest = () => {
-    navigation.navigate('AddInvestCoin');
+    navigation.navigate('AddInvestStock');
   };
   return (
     <SafeAreaView style={styles.wrap}>

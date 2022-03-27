@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../contants/Colors';
+import {
+  PRIMARY_COLOR,
+  SECONDARY_BG_COLOR,
+  SECONDARY_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 
 export default function MyTabBar({ state, descriptors, navigation }) {
   return (
@@ -9,9 +14,7 @@ export default function MyTabBar({ state, descriptors, navigation }) {
         flexDirection: 'row',
         padding: 10,
         justifyContent: 'space-between',
-        backgroundColor: 'white',
-        borderTopWidth: 1,
-        borderTopColor: SECONDARY_COLOR,
+        backgroundColor: SECONDARY_BG_COLOR,
       }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -59,7 +62,8 @@ export default function MyTabBar({ state, descriptors, navigation }) {
             <Icon style={{ fontSize: 20 }} focused={isFocused} />
             <Text
               style={{
-                color: isFocused ? PRIMARY_COLOR : '#222',
+                color: WHITE_COLOR,
+                opacity: isFocused ? 1 : 0.5,
                 fontSize: 12,
                 fontWeight: isFocused ? '500' : '400',
               }}>

@@ -1,7 +1,13 @@
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import React from 'react';
 import MyButton from '../components/Button';
-import { PRIMARY_COLOR, SECONDARY_COLOR } from '../contants/Colors';
+import {
+  BACKGROUND_COLOR,
+  PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 import { LOGO } from '../contants/Images';
 import WellcomeCarousel from '../components/WellcomeCarousel';
 
@@ -23,12 +29,12 @@ export default function WellcomeScreen({ navigation }: { navigation: any }) {
         <WellcomeCarousel />
       </View>
       <View style={styles.buttonWrap}>
-        <MyButton text={'ĐĂNG KÝ MIỄN PHÍ'} onPress={goSignUp} />
+        <MyButton text={'FREE REGISTRATION'} onPress={goSignUp} />
         <MyButton
-          text={'ĐĂNG NHẬP'}
+          text={'SIGN IN'}
           style={{
-            text: { color: PRIMARY_COLOR },
-            wrap: { backgroundColor: SECONDARY_COLOR },
+            text: { color: WHITE_COLOR },
+            wrap: { backgroundColor: THIRD_BG_COLOR },
           }}
           onPress={goLogin}
         />
@@ -39,7 +45,7 @@ export default function WellcomeScreen({ navigation }: { navigation: any }) {
 }
 
 const styles = StyleSheet.create({
-  wrap: { flex: 1, backgroundColor: 'white' },
+  wrap: { flex: 1, backgroundColor: BACKGROUND_COLOR },
   container: {
     flex: 1,
   },
@@ -53,6 +59,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 'auto',
     fontSize: 11,
+    color: WHITE_COLOR,
+    opacity: 0.3,
   },
   logoWrap: {
     height: 50,

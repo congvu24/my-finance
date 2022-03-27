@@ -10,23 +10,34 @@ import React from 'react';
 import BackArrow from '../components/BackArrow';
 import MyButton from '../components/Button';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {
+  BACKGROUND_COLOR,
+  BLUE_COLOR,
+  GREEN_COLOR,
+  SECONDARY_BG_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
+import SpendingCategory from '../components/SpendingCategory';
+import SpendingMoneySource from '../components/SpendingMoneySource';
 
 export default function AddTransactionScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.header}>
-        <BackArrow navigation={navigation} />
-        <Text style={styles.typeText}>Income</Text>
+        <BackArrow />
+        <Text style={styles.typeText}>Transactions</Text>
       </View>
       <View style={styles.wrapType}>
-        <TouchableOpacity style={styles.typeBtn}>
-          <Text style={styles.typeBtnText}>Thu</Text>
+        <TouchableOpacity
+          style={{ ...styles.typeBtn, borderColor: WHITE_COLOR }}>
+          <Text style={{ ...styles.typeBtnText, opacity: 1 }}>Income</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.typeBtn}>
-          <Text style={styles.typeBtnText}>Chi</Text>
+          <Text style={styles.typeBtnText}>Outcome</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.typeBtn}>
-          <Text style={styles.typeBtnText}>Chuyển khoản</Text>
+          <Text style={styles.typeBtnText}>Transfer</Text>
         </TouchableOpacity>
       </View>
       <View>
@@ -44,7 +55,7 @@ export default function AddTransactionScreen({ navigation }) {
         </View>
         <View style={styles.input}>
           <Text style={styles.inputName}>Amount</Text>
-          <TextInput style={styles.inputField} />
+          <TextInput style={styles.inputField} keyboardType="numeric" />
         </View>
         <View style={styles.input}>
           <Text style={styles.inputName}>Note</Text>
@@ -57,76 +68,29 @@ export default function AddTransactionScreen({ navigation }) {
           <MyButton text={'Save'} style={{ wrap: styles.saveBtn, text: {} }} />
           <MyButton
             text={'Next'}
-            style={{ wrap: styles.nextBtn, text: { color: 'black' } }}
+            style={{ wrap: styles.nextBtn, text: { color: WHITE_COLOR } }}
           />
         </View>
-        <View style={styles.selectWrap}>
-          <View style={styles.selectHeader}>
-            <Text style={styles.selectHeaderText}>Select header</Text>
-          </View>
-          <View style={styles.select}>
-            <TouchableOpacity style={styles.selectBtn}>
-              <Text style={styles.selectText}>Salary</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.selectBtn}>
-              <Text style={styles.selectText}>Salary</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.selectBtn}>
-              <Text style={styles.selectText}>Salary</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.selectBtn}>
-              <Text style={styles.selectText}>Salary</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <SpendingCategory />
+        <SpendingMoneySource />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  selectHeaderText: {
-    color: 'white',
-    fontSize: 12,
-  },
-  selectHeader: {
-    backgroundColor: 'grey',
-    padding: 5,
-  },
-  selectWrap: {
-    marginTop: 20,
-  },
-  select: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    backgroundColor: '#aba9a9',
-    paddingVertical: 10,
-  },
-  selectBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '30%',
-    borderWidth: 1,
-    padding: 5,
-    margin: 4,
-    borderRadius: 2,
-  },
-  selectText: {
-    textAlign: 'center',
-    fontSize: 12,
-  },
   addImageBtn: {
     paddingHorizontal: 10,
   },
   addImageIcon: {
     fontSize: 14,
+    color: WHITE_COLOR,
   },
   nextBtn: {
-    backgroundColor: 'white',
+    backgroundColor: BLUE_COLOR,
     borderWidth: 1,
     borderRadius: 5,
-    marginLeft: 20,
+    marginLeft: 10,
     paddingHorizontal: 14,
   },
   saveWrap: {
@@ -136,7 +100,7 @@ const styles = StyleSheet.create({
   },
   saveBtn: {
     borderRadius: 5,
-    backgroundColor: 'blue',
+    backgroundColor: GREEN_COLOR,
     flex: 1,
     borderWidth: 1,
   },
@@ -150,15 +114,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     flex: 1,
     padding: 0,
+    color: WHITE_COLOR,
+    borderColor: THIRD_BG_COLOR,
   },
   inputName: {
     width: 60,
     fontSize: 13,
     fontWeight: '500',
+    color: WHITE_COLOR,
   },
   wrap: {
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: BACKGROUND_COLOR,
     flex: 1,
   },
   header: {
@@ -167,6 +134,7 @@ const styles = StyleSheet.create({
   },
   typeText: {
     marginLeft: 10,
+    color: WHITE_COLOR,
   },
   wrapType: {
     flexDirection: 'row',
@@ -181,9 +149,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 5,
     padding: 2,
+    borderColor: THIRD_BG_COLOR,
   },
   typeBtnText: {
     fontSize: 12,
     fontWeight: '600',
+    color: WHITE_COLOR,
+    opacity: 0.7,
   },
 });

@@ -1,22 +1,45 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import React from 'react';
+import { WHITE_COLOR } from '../contants/Colors';
+import { OVERVIEW_BG } from '../contants/Images';
+import { RootState } from '../redux';
+import { useSelector } from 'react-redux';
+import { User } from '../models/User';
 
 export default function HomeOverview() {
+  const userData = useSelector<RootState>(state => state.user.data) as User;
+
   return (
     <View style={styles.overview}>
-      <Text style={styles.welcomeText}>Hello, Duong Cong Vu</Text>
+      <Text style={styles.welcomeText}>Hello, {userData?.name || ''}</Text>
       <Text style={styles.subWelcomeText}>Welcome to MyFiance</Text>
-      <View style={styles.balance}>
-        <Text style={styles.yourBalance}>Tài khoản của bạn</Text>
-        <Text style={styles.money}>250.000.000 VND</Text>
-        <TouchableOpacity style={styles.overviewBtn}>
-          <Text style={styles.overviewBtnText}>Xem thống kê tài khoản</Text>
-          <View style={styles.overviewBtnIcon}>
-            <Icon name="chevron-right" style={{ fontSize: 14 }} />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <ImageBackground
+        source={OVERVIEW_BG}
+        resizeMode="cover"
+        style={styles.overviewBg}>
+        <View style={styles.balance}>
+          <Text style={styles.yourBalance}>Your balance</Text>
+          <Text style={styles.money}>250.000.000 VND</Text>
+          <TouchableOpacity style={styles.overviewBtn}>
+            <Text style={styles.overviewBtnText}>
+              View your balance overview
+            </Text>
+            <View style={styles.overviewBtnIcon}>
+              <Icon
+                name="chevron-right"
+                style={{ fontSize: 14, color: WHITE_COLOR, opacity: 0.8 }}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -24,12 +47,18 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 18,
     fontWeight: '500',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   subWelcomeText: {
     fontSize: 16,
     fontWeight: '400',
     opacity: 0.8,
+    color: WHITE_COLOR,
+  },
+  overviewBg: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginTop: 10,
   },
   overview: {
     padding: 15,
@@ -51,19 +80,18 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    color: WHITE_COLOR,
   },
 
   balance: {
     padding: 10,
-    backgroundColor: 'blue',
     marginTop: 10,
     borderRadius: 10,
   },
   yourBalance: {
-    fontWeight: '500',
-    fontSize: 12,
-    color: 'white',
+    fontWeight: '400',
+    fontSize: 14,
+    color: WHITE_COLOR,
   },
   money: {
     fontWeight: '700',

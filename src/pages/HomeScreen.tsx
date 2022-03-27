@@ -1,6 +1,6 @@
 import React from 'react';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
-import { PRIMARY_COLOR } from '../contants/Colors';
+import { PRIMARY_COLOR, WHITE_COLOR } from '../contants/Colors';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyTabBar from '../components/TabBar';
 import HomeTab from './HomeTab';
@@ -21,13 +21,14 @@ export default function HomeScreen() {
         name="HomeTab"
         component={HomeTab}
         options={{
-          title: 'Trang chủ',
+          title: 'Home',
           tabBarIcon: ({ focused }) => (
             <AntdIcon
               name="home"
               style={{
                 fontSize: 18,
-                color: focused ? PRIMARY_COLOR : '#222',
+                color: WHITE_COLOR,
+                opacity: focused ? 1 : 0.5,
                 fontWeight: focused ? '500' : '400',
               }}
             />
@@ -38,13 +39,14 @@ export default function HomeScreen() {
         name="ManageTab"
         component={SpendingTab}
         options={{
-          title: 'Chi tiêu',
+          title: 'Spending',
           tabBarIcon: ({ focused }) => (
             <AntdIcon
               name="tago"
               style={{
                 fontSize: 18,
-                color: focused ? PRIMARY_COLOR : '#222',
+                color: WHITE_COLOR,
+                opacity: focused ? 1 : 0.5,
                 fontWeight: focused ? '500' : '400',
               }}
             />
@@ -55,13 +57,14 @@ export default function HomeScreen() {
         name="InvestTab"
         component={InvestTab}
         options={{
-          title: 'Đầu tư',
+          title: 'Invest',
           tabBarIcon: ({ focused }) => (
             <AntdIcon
               name="linechart"
               style={{
                 fontSize: 18,
-                color: focused ? PRIMARY_COLOR : '#222',
+                color: WHITE_COLOR,
+                opacity: focused ? 1 : 0.5,
                 fontWeight: focused ? '500' : '400',
               }}
             />
@@ -72,13 +75,14 @@ export default function HomeScreen() {
         name="OptionTab"
         component={ProifleTab}
         options={{
-          title: 'Tài khoản',
+          title: 'Account',
           tabBarIcon: ({ focused }) => (
             <AntdIcon
               name="user"
               style={{
                 fontSize: 18,
-                color: focused ? PRIMARY_COLOR : '#222',
+                color: WHITE_COLOR,
+                opacity: focused ? 1 : 0.5,
                 fontWeight: focused ? '500' : '400',
               }}
             />

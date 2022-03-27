@@ -5,23 +5,54 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import { LOGO } from '../contants/Images';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { PRIMARY_COLOR } from '../contants/Colors';
+import {
+  BACKGROUND_COLOR,
+  PRIMARY_COLOR,
+  RED_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux';
+import { User } from '../models/User';
+import { removeLogin } from '../redux/reducer/user';
 
 export default function ProifleTab() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const userData = useSelector<RootState>(state => state.user.data) as User;
+
+  const gotoMoneySource = () => {
+    navigation.navigate('MoneySource');
+  };
+
+  const confirmLogin = () =>
+    Alert.alert('Logout', 'Do you agree to log out?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => dispatch(removeLogin()) },
+    ]);
+
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.user}>
         <View style={styles.userAvatar}>
           <Image source={LOGO} style={styles.userAvatarImage} />
         </View>
-        <Text style={styles.userName}>Cong Vu</Text>
+        <Text style={styles.userName}>{userData.name}</Text>
       </View>
 
-      <View style={styles.promote}>
+      <TouchableOpacity style={styles.promote} onPress={() => {}}>
         <View style={styles.addFriend}>
           <Icon name="adduser" style={styles.addFriendIcon} />
         </View>
@@ -30,7 +61,7 @@ export default function ProifleTab() {
           <Text style={styles.promoteSubTitle}>Get more benefits</Text>
         </View>
         <Icon name="right" style={styles.promoteRight} />
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.list}>
         <Text style={styles.listTitle}>Account settings</Text>
@@ -40,11 +71,11 @@ export default function ProifleTab() {
           <Icon name="right" style={styles.itemRight} />
         </View>
 
-        <View style={styles.item}>
+        <TouchableOpacity style={styles.item} onPress={gotoMoneySource}>
           <Icon name="wallet" style={styles.itemIcon} />
           <Text style={styles.itemTitle}>Wallets</Text>
           <Icon name="right" style={styles.itemRight} />
-        </View>
+        </TouchableOpacity>
 
         <Text style={styles.listTitle}>General</Text>
         <View style={styles.item}>
@@ -65,7 +96,7 @@ export default function ProifleTab() {
       </View>
 
       <Text style={styles.version}>Version 1.1.0</Text>
-      <TouchableOpacity style={styles.logoutBtn}>
+      <TouchableOpacity style={styles.logoutBtn} onPress={confirmLogin}>
         <Text style={styles.logoutText}>Log out</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -82,6 +113,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     alignItems: 'center',
     borderWidth: 1,
+    borderColor: THIRD_BG_COLOR,
   },
   addFriend: {
     justifyContent: 'center',
@@ -101,17 +133,19 @@ const styles = StyleSheet.create({
   },
   promoteTitle: {
     fontWeight: '600',
-    color: 'black',
+    color: WHITE_COLOR,
     fontSize: 14,
   },
   promoteSubTitle: {
     fontSize: 12,
+    color: WHITE_COLOR,
+    opacity: 0.7,
   },
   promoteRight: { marginLeft: 'auto', fontSize: 14, color: PRIMARY_COLOR },
 
   wrap: {
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: BACKGROUND_COLOR,
     flex: 1,
   },
   user: {
@@ -131,9 +165,9 @@ const styles = StyleSheet.create({
   },
   userName: {
     marginTop: 10,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   list: {
     padding: 10,
@@ -142,6 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     marginVertical: 10,
+    color: WHITE_COLOR,
   },
   item: {
     flexDirection: 'row',
@@ -150,14 +185,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 0.5,
     marginTop: 5,
+    borderBottomColor: THIRD_BG_COLOR,
   },
   itemIcon: {
     fontWeight: '500',
     fontSize: 14,
     marginRight: 10,
+    color: WHITE_COLOR,
   },
   itemTitle: {
     fontWeight: '500',
+    color: WHITE_COLOR,
   },
   itemRight: {
     marginLeft: 'auto',
@@ -169,6 +207,8 @@ const styles = StyleSheet.create({
     margin: 'auto',
     textAlign: 'center',
     fontSize: 12,
+    color: WHITE_COLOR,
+    opacity: 0.7,
   },
   logoutBtn: {
     textAlign: 'center',
@@ -177,6 +217,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoutText: {
-    color: 'red',
+    color: RED_COLOR,
   },
 });

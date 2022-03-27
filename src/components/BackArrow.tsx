@@ -1,8 +1,11 @@
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
+import { WHITE_COLOR } from '../contants/Colors';
 
-export default function BackArrow({ navigation, ...props }) {
+export default function BackArrow({ ...props }) {
+  const navigation = useNavigation();
   const goBack = () => {
     navigation.goBack();
   };
@@ -16,5 +19,6 @@ export default function BackArrow({ navigation, ...props }) {
 const styles = StyleSheet.create({
   icon: {
     fontSize: 14,
+    color: WHITE_COLOR,
   },
 });

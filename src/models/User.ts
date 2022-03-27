@@ -1,14 +1,6 @@
 export interface User {
-  username: String;
-  token: String;
-  name: String;
-  avatar: String;
-  age: Number;
-  isMale: Boolean;
-  uid: String;
-}
-
-export interface UserLoginInfo {
-  username: String;
-  password: String;
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
 }

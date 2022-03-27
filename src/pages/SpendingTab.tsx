@@ -8,7 +8,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
-import { SECONDARY_COLOR } from '../contants/Colors';
+import {
+  BACKGROUND_COLOR,
+  BLUE_COLOR,
+  GREEN_COLOR,
+  RED_COLOR,
+  SECONDARY_BG_COLOR,
+  SECONDARY_COLOR,
+  THIRD_BG_COLOR,
+  WHITE_COLOR,
+} from '../contants/Colors';
 
 export default function SpendingTab({ navigation }) {
   const goToAddTransaction = () => {
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
   floatBtn: {
     width: 50,
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: GREEN_COLOR,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -202,7 +211,7 @@ const styles = StyleSheet.create({
   floatBtnSmall: {
     width: 40,
     height: 40,
-    backgroundColor: 'blue',
+    backgroundColor: BLUE_COLOR,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -230,38 +239,38 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 5,
-    borderBottomWidth: 0.5,
   },
   tabText: {
     fontSize: 13,
     fontWeight: '600',
+    color: WHITE_COLOR,
+    opacity: 0.5,
   },
   tabActive: {
     flex: 1,
     alignItems: 'center',
     paddingVertical: 5,
-    borderBottomWidth: 2,
-    borderBottomColor: 'red',
-    // backgroundColor: SECONDARY_COLOR,
+    borderBottomColor: SECONDARY_BG_COLOR,
+    backgroundColor: SECONDARY_BG_COLOR,
   },
   tabTextActive: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   record: {
     width: '100%',
-    marginBottom: 10,
-    backgroundColor: SECONDARY_COLOR,
+    marginBottom: 5,
+    marginTop: 5,
+    backgroundColor: SECONDARY_BG_COLOR,
   },
   recordHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: 30,
     alignItems: 'center',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 0.5,
     paddingHorizontal: 10,
+    backgroundColor: THIRD_BG_COLOR,
   },
   recordDate: {
     flex: 3,
@@ -269,7 +278,8 @@ const styles = StyleSheet.create({
   recordTextDate: {
     fontSize: 12,
     fontWeight: '600',
-    color: 'black',
+    color: WHITE_COLOR,
+    opacity: 0.8,
   },
   recordCol: {
     flex: 2,
@@ -277,7 +287,7 @@ const styles = StyleSheet.create({
   },
   recordIn: {
     fontSize: 13,
-    color: 'blue',
+    color: GREEN_COLOR,
     fontWeight: '500',
   },
   recordOut: {
@@ -287,6 +297,7 @@ const styles = StyleSheet.create({
   },
   recordBody: {
     paddingHorizontal: 10,
+    backgroundColor: SECONDARY_BG_COLOR,
   },
   recordItem: {
     flexDirection: 'row',
@@ -300,16 +311,19 @@ const styles = StyleSheet.create({
   itemCategory: {
     fontSize: 12,
     fontWeight: '500',
+    color: WHITE_COLOR,
   },
   itemSecond: { flex: 2 },
   itemTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   itemSource: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '400',
+    color: WHITE_COLOR,
+    opacity: 0.7,
   },
   itemLast: {
     flex: 1,
@@ -317,17 +331,17 @@ const styles = StyleSheet.create({
   },
   itemOut: {
     fontSize: 13,
-    color: 'red',
+    color: RED_COLOR,
     fontWeight: '500',
   },
   itemIn: {
     fontSize: 13,
-    color: 'blue',
+    color: GREEN_COLOR,
     fontWeight: '500',
   },
 
   wrap: {
-    backgroundColor: 'white',
+    backgroundColor: BACKGROUND_COLOR,
     flex: 1,
   },
   header: {
@@ -340,7 +354,7 @@ const styles = StyleSheet.create({
   headerIcon: {
     fontSize: 16,
     fontWeight: '700',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   headerMonth: {
     flexDirection: 'row',
@@ -351,7 +365,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 12,
     fontWeight: '500',
-    color: 'black',
+    color: WHITE_COLOR,
     marginHorizontal: 5,
   },
   headerTool: {
@@ -364,9 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 0.5,
     paddingVertical: 5,
-    borderBottomColor: 'grey',
   },
   typeCol: {
     flex: 1,
@@ -376,21 +388,21 @@ const styles = StyleSheet.create({
   typeText: {
     fontSize: 12,
     fontWeight: '500',
-    color: 'black',
+    color: WHITE_COLOR,
   },
   typeIncome: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'blue',
+    color: GREEN_COLOR,
   },
   typeOutcome: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'red',
+    color: RED_COLOR,
   },
   typeSum: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'black',
+    color: BLUE_COLOR,
   },
 });
