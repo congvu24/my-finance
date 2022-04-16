@@ -38,6 +38,7 @@ import Splash from './src/pages/Splash';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import LoadingModal from './src/components/LoadingModal';
 import { PersistGate } from 'redux-persist/integration/react';
+import Test from './src/pages/Test';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,7 @@ const App = () => {
                 headerShown: false,
                 animation: 'slide_from_right',
               }}>
+              <Stack.Screen name="Test" component={Test} />
               <Stack.Screen name="Splash" component={Splash} />
               <Stack.Screen name="Wellcome" component={WellcomeScreen} />
               <Stack.Screen name="Login" component={LoginScreen} />

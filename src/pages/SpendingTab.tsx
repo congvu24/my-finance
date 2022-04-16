@@ -4,9 +4,9 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  useWindowDimensions,
+  ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {
   BACKGROUND_COLOR,
@@ -14,12 +14,46 @@ import {
   GREEN_COLOR,
   RED_COLOR,
   SECONDARY_BG_COLOR,
-  SECONDARY_COLOR,
-  THIRD_BG_COLOR,
   WHITE_COLOR,
 } from '../contants/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTransactions } from '../redux/reducer/transaction';
+import { RootState } from '../redux';
+import _ from 'lodash';
+import SpendingGroup from '../components/SpendingGroup';
+import { Transaction } from '../models/Transaction';
+import formatMoney from '../utils/formatMoney';
+import MonthPicker from '../components/MonthPicker';
+import MonthSelection from '../components/MonthSelection';
+
+const tabs = [
+  {
+    name: 'Daily',
+    key: 'daily',
+  },
+  {
+    name: 'Weekly',
+    key: 'weekly',
+  },
+  {
+    name: 'Monthly',
+    key: 'monthly',
+  },
+];
 
 export default function SpendingTab({ navigation }) {
+  const dispatch = useDispatch();
+
+  const [sumIn, setSumIn] = useState(0);
+  const [sumOut, setSumOut] = useState(0);
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [tab, setTab] = useState('daily');
+
+  const data = useSelector<RootState>(
+    state => state.transaction.transaction,
+  ) as Transaction[];
+
   const goToAddTransaction = () => {
     navigation.navigate('AddTransaction');
   };
@@ -28,26 +62,65 @@ export default function SpendingTab({ navigation }) {
     navigation.navigate('OverviewSpending');
   };
 
+  const onMonthSelect = (selectedMonth, selectedYear) => {
+    setMonth(selectedMonth);
+    setYear(selectedYear);
+  };
+
+  useEffect(() => {
+    dispatch(getTransactions());
+  }, []);
+
+  const groups = _.groupBy(
+    data.filter(item => {
+      const date = new Date(parseInt(item.date));
+      return date.getMonth() === month && date.getFullYear() === year;
+    }),
+    item => {
+      const date = new Date(parseInt(item.date));
+
+      if (tab === 'monthly') {
+        return date.getMonth() + 1 + '.' + date.getFullYear();
+      } else if (tab === 'daily') {
+        return date.toLocaleDateString();
+      } else if (tab === 'weekly') {
+        var firstday = new Date(date.setDate(date.getDate() - date.getDay()));
+        var lastday = new Date(
+          date.setDate(date.getDate() - date.getDay() + 6),
+        );
+
+        return (
+          firstday.getDate() +
+          '.' +
+          (firstday.getMonth() + 1) +
+          ' ~ ' +
+          lastday.getDate() +
+          '.' +
+          (lastday.getMonth() + 1)
+        );
+      }
+    },
+  );
+
+  useEffect(() => {
+    let sum1 = 0;
+    let sum2 = 0;
+
+    data.forEach(item => {
+      if (item.type > 0) {
+        sum1 = sum1 + item.amount;
+      } else if (item.type < 0) {
+        sum2 = sum2 + item.amount;
+      }
+    });
+    setSumOut(sum2);
+    setSumIn(sum1);
+  }, [data]);
+
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.header}>
-        <View style={styles.headerMonth}>
-          <TouchableOpacity>
-            <AntdIcon
-              name="left"
-              style={{ ...styles.headerIcon, fontSize: 12 }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.headerText}>tháng 3 2022</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntdIcon
-              name="right"
-              style={{ ...styles.headerIcon, fontSize: 12 }}
-            />
-          </TouchableOpacity>
-        </View>
+        <MonthSelection onMonthSelect={onMonthSelect} />
         <View style={styles.headerTool}>
           <TouchableOpacity>
             <AntdIcon name="staro" style={styles.headerIcon} />
@@ -62,115 +135,47 @@ export default function SpendingTab({ navigation }) {
       </View>
 
       <View style={styles.tab}>
-        <TouchableOpacity style={styles.tabActive}>
-          <Text style={styles.tabTextActive}>Tháng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabText}>Ngày</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabText}>Tuần</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabText}>Năm</Text>
-        </TouchableOpacity>
+        {tabs.map(item => (
+          <TouchableOpacity
+            style={item.key === tab ? styles.tabActive : styles.tabItem}
+            key={item.key}
+            onPress={() => setTab(item.key)}>
+            <Text
+              style={item.key === tab ? styles.tabTextActive : styles.tabText}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       <View style={styles.type}>
         <View style={styles.typeCol}>
-          <Text style={styles.typeText}>Thu</Text>
-          <Text style={styles.typeIncome}>0</Text>
+          <Text style={styles.typeText}>Income</Text>
+          <Text style={styles.typeIncome}>{formatMoney(sumIn)}</Text>
         </View>
         <View style={styles.typeCol}>
-          <Text style={styles.typeText}>Chi</Text>
-          <Text style={styles.typeOutcome}>4.500.000</Text>
+          <Text style={styles.typeText}>Outcome</Text>
+          <Text style={styles.typeOutcome}>{formatMoney(sumOut)}</Text>
         </View>
         <View style={styles.typeCol}>
-          <Text style={styles.typeText}>Cộng</Text>
-          <Text style={styles.typeSum}>4.500.000</Text>
+          <Text style={styles.typeText}>Total</Text>
+          <Text style={styles.typeSum}>{formatMoney(sumIn - sumOut)}</Text>
         </View>
       </View>
 
-      <View>
-        <View style={styles.record}>
-          <View style={styles.recordHeader}>
-            <View style={styles.recordDate}>
-              <Text style={styles.recordTextDate}>01 Th3 03.2022</Text>
-            </View>
-            <View style={styles.recordCol}>
-              <Text style={styles.recordIn}>1.000đ</Text>
-            </View>
-            <View style={styles.recordCol}>
-              <Text style={styles.recordOut}>4.500.000đ</Text>
-            </View>
-          </View>
-          <View style={styles.recordBody}>
-            <View style={styles.recordItem}>
-              <View style={styles.itemFirst}>
-                <Text style={styles.itemCategory}>Khác</Text>
-              </View>
-              <View style={styles.itemSecond}>
-                <Text style={styles.itemTitle}>Đạt mượn</Text>
-                <Text style={styles.itemSource}>Tài khoản ngân hàng</Text>
-              </View>
-              <View style={styles.itemLast}>
-                <Text style={styles.itemOut}>-4.500.000đ</Text>
-              </View>
-            </View>
-            <View style={styles.recordItem}>
-              <View style={styles.itemFirst}>
-                <Text style={styles.itemCategory}>Khác</Text>
-              </View>
-              <View style={styles.itemSecond}>
-                <Text style={styles.itemTitle}>Đạt mượn</Text>
-                <Text style={styles.itemSource}>Tài khoản ngân hàng</Text>
-              </View>
-              <View style={styles.itemLast}>
-                <Text style={styles.itemIn}>+200.000đ</Text>
-              </View>
-            </View>
-          </View>
+      {Object.keys(groups).length === 0 && (
+        <View style={{ marginTop: 30, marginHorizontal: 'auto' }}>
+          <Text
+            style={{ color: WHITE_COLOR, fontSize: 11, textAlign: 'center' }}>
+            There is no transaction in this time.
+          </Text>
         </View>
-        <View style={styles.record}>
-          <View style={styles.recordHeader}>
-            <View style={styles.recordDate}>
-              <Text style={styles.recordTextDate}>01 Th3 03.2022</Text>
-            </View>
-            <View style={styles.recordCol}>
-              <Text style={styles.recordIn}>1.000đ</Text>
-            </View>
-            <View style={styles.recordCol}>
-              <Text style={styles.recordOut}>4.500.000đ</Text>
-            </View>
-          </View>
-          <View style={styles.recordBody}>
-            <View style={styles.recordItem}>
-              <View style={styles.itemFirst}>
-                <Text style={styles.itemCategory}>Khác</Text>
-              </View>
-              <View style={styles.itemSecond}>
-                <Text style={styles.itemTitle}>Đạt mượn</Text>
-                <Text style={styles.itemSource}>Tài khoản ngân hàng</Text>
-              </View>
-              <View style={styles.itemLast}>
-                <Text style={styles.itemOut}>-4.500.000đ</Text>
-              </View>
-            </View>
-            <View style={styles.recordItem}>
-              <View style={styles.itemFirst}>
-                <Text style={styles.itemCategory}>Khác</Text>
-              </View>
-              <View style={styles.itemSecond}>
-                <Text style={styles.itemTitle}>Đạt mượn</Text>
-                <Text style={styles.itemSource}>Tài khoản ngân hàng</Text>
-              </View>
-              <View style={styles.itemLast}>
-                <Text style={styles.itemIn}>+200.000đ</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
+      )}
+      <ScrollView>
+        {Object.keys(groups).map(key => (
+          <SpendingGroup group={groups[key]} keyName={key} key={key} />
+        ))}
+      </ScrollView>
 
       <View style={styles.float}>
         <TouchableOpacity
@@ -250,7 +255,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 5,
-    borderBottomColor: SECONDARY_BG_COLOR,
+    borderBottomWidth: 2,
+    borderBottomColor: GREEN_COLOR,
     backgroundColor: SECONDARY_BG_COLOR,
   },
   tabTextActive: {
@@ -258,88 +264,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: WHITE_COLOR,
   },
-  record: {
-    width: '100%',
-    marginBottom: 5,
-    marginTop: 5,
-    backgroundColor: SECONDARY_BG_COLOR,
-  },
-  recordHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 30,
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    backgroundColor: THIRD_BG_COLOR,
-  },
-  recordDate: {
-    flex: 3,
-  },
-  recordTextDate: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: WHITE_COLOR,
-    opacity: 0.8,
-  },
-  recordCol: {
-    flex: 2,
-    alignItems: 'flex-end',
-  },
-  recordIn: {
-    fontSize: 13,
-    color: GREEN_COLOR,
-    fontWeight: '500',
-  },
-  recordOut: {
-    fontSize: 13,
-    color: 'red',
-    fontWeight: '500',
-  },
-  recordBody: {
-    paddingHorizontal: 10,
-    backgroundColor: SECONDARY_BG_COLOR,
-  },
-  recordItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  itemFirst: {
-    flex: 1,
-  },
-  itemCategory: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: WHITE_COLOR,
-  },
-  itemSecond: { flex: 2 },
-  itemTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: WHITE_COLOR,
-  },
-  itemSource: {
-    fontSize: 12,
-    fontWeight: '400',
-    color: WHITE_COLOR,
-    opacity: 0.7,
-  },
-  itemLast: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  itemOut: {
-    fontSize: 13,
-    color: RED_COLOR,
-    fontWeight: '500',
-  },
-  itemIn: {
-    fontSize: 13,
-    color: GREEN_COLOR,
-    fontWeight: '500',
-  },
-
   wrap: {
     backgroundColor: BACKGROUND_COLOR,
     flex: 1,
@@ -350,6 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     height: 40,
+    position: 'relative',
   },
   headerIcon: {
     fontSize: 16,
@@ -361,6 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: 100,
     alignItems: 'center',
+    position: 'relative',
   },
   headerText: {
     fontSize: 12,

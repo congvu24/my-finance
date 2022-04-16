@@ -10,7 +10,7 @@ import {
 import { Category } from '../models/Category';
 import { getCategory } from '../redux/reducer/feature';
 
-export default function SpendingCategory() {
+export default function SpendingCategory({ onChange }: { onChange: Function }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategory());
@@ -20,6 +20,8 @@ export default function SpendingCategory() {
     state => state.feature.category,
   ) as Category[];
 
+  const onSelect = (value: string) => onChange(value);
+
   return useMemo(
     () => (
       <View style={styles.selectWrap}>
@@ -28,7 +30,10 @@ export default function SpendingCategory() {
         </View>
         <View style={styles.select}>
           {result.map(item => (
-            <TouchableOpacity style={styles.selectBtn} key={item.id}>
+            <TouchableOpacity
+              style={styles.selectBtn}
+              key={item.id}
+              onPress={() => onSelect(item.name)}>
               <Text style={styles.selectText}>{item.name}</Text>
             </TouchableOpacity>
           ))}

@@ -5,6 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -27,6 +28,10 @@ export default function HomeTab({ navigation }) {
 
   const isLogged = useSelector<RootState>(state => state.user.isLogged);
 
+  const gotoSpendingTab = () => {
+    navigation.navigate('ManageTab');
+  };
+
   useEffect(() => {
     if (!isLogged) {
       navigation.replace('Wellcome');
@@ -35,23 +40,25 @@ export default function HomeTab({ navigation }) {
 
   return (
     <SafeAreaView style={styles.wrap}>
-      <View style={styles.header}>
-        <View>
-          <Icon name="text" style={styles.drawerBtn} />
+      <ScrollView>
+        <View style={styles.header}>
+          <View>
+            <Icon name="text" style={styles.drawerBtn} />
+          </View>
+          <TouchableOpacity style={styles.avatarWrap} onPress={signOut}>
+            <Image source={LOGO} style={styles.avatar} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.avatarWrap} onPress={signOut}>
-          <Image source={LOGO} style={styles.avatar} />
-        </TouchableOpacity>
-      </View>
-      <HomeOverview />
-      <HomeShortcut />
-      <View style={styles.history}>
-        <Text style={styles.historyText}>Transactions</Text>
-        <TouchableOpacity>
-          <Text style={styles.historyAll}>See all</Text>
-        </TouchableOpacity>
-      </View>
-      <HomeShortList />
+        <HomeOverview />
+        <HomeShortcut />
+        <View style={styles.history}>
+          <Text style={styles.historyText}>Transactions</Text>
+          <TouchableOpacity onPress={gotoSpendingTab}>
+            <Text style={styles.historyAll}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <HomeShortList />
+      </ScrollView>
     </SafeAreaView>
   );
 }

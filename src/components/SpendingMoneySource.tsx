@@ -12,7 +12,11 @@ import { MoneySource } from '../models/MoneySource';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 
-export default function SpendingMoneySource() {
+export default function SpendingMoneySource({
+  onChange,
+}: {
+  onChange: Function;
+}) {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -28,6 +32,8 @@ export default function SpendingMoneySource() {
     navigation.navigate('AddMoneySource');
   };
 
+  const onSelect = (value: string) => onChange(value);
+
   return useMemo(
     () => (
       <View style={styles.selectWrap}>
@@ -39,7 +45,10 @@ export default function SpendingMoneySource() {
         </View>
         <View style={styles.select}>
           {result.map(item => (
-            <TouchableOpacity style={styles.selectBtn} key={item.id}>
+            <TouchableOpacity
+              style={styles.selectBtn}
+              key={item.id}
+              onPress={() => onSelect(item.name)}>
               <Text style={styles.selectText}>{item.name}</Text>
             </TouchableOpacity>
           ))}

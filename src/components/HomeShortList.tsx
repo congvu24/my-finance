@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LOGO } from '../contants/Images';
 import {
   GREEN_COLOR,
@@ -9,46 +9,41 @@ import {
   SECONDARY_COLOR,
   WHITE_COLOR,
 } from '../contants/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux';
+import { Transaction } from '../models/Transaction';
+import formatMoney from '../utils/formatMoney';
+import { getTransactions } from '../redux/reducer/transaction';
 
 export default function HomeShortList() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTransactions());
+  }, []);
+
+  const transaction = useSelector<RootState>(
+    state => state.transaction.transaction,
+  ) as Transaction[];
+
   return (
     <View style={styles.shortList}>
-      <View style={styles.itemWrap}>
-        <View style={styles.itemAvatar}>
-          <Image source={LOGO} style={styles.itemAvatarImg} />
+      {transaction.slice(0, 4).map(item => (
+        <View style={styles.itemWrap} key={item.category + item.note}>
+          <View style={styles.itemAvatar}>
+            <Image source={LOGO} style={styles.itemAvatarImg} />
+          </View>
+          <View style={styles.itemBody}>
+            <Text style={styles.itemTitle}>{item.note}</Text>
+            <Text style={styles.itemTime}>
+              {new Date(parseInt(item.date)).toLocaleString()}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.itemMoney}>{formatMoney(item.amount)}</Text>
+          </View>
         </View>
-        <View style={styles.itemBody}>
-          <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17 May 03:20pm</Text>
-        </View>
-        <View>
-          <Text style={styles.itemMoney}>+ 100$</Text>
-        </View>
-      </View>
-      <View style={styles.itemWrap}>
-        <View style={styles.itemAvatar}>
-          <Image source={LOGO} style={styles.itemAvatarImg} />
-        </View>
-        <View style={styles.itemBody}>
-          <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17 May 03:20pm</Text>
-        </View>
-        <View>
-          <Text style={styles.itemMoneyRed}>+ $100</Text>
-        </View>
-      </View>
-      <View style={styles.itemWrap}>
-        <View style={styles.itemAvatar}>
-          <Image source={LOGO} style={styles.itemAvatarImg} />
-        </View>
-        <View style={styles.itemBody}>
-          <Text style={styles.itemTitle}>Chuyển tiền</Text>
-          <Text style={styles.itemTime}>17 May 03:20pm</Text>
-        </View>
-        <View>
-          <Text style={styles.itemMoneyRed}>- $100</Text>
-        </View>
-      </View>
+      ))}
     </View>
   );
 }

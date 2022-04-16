@@ -28,7 +28,6 @@ export const getMoneySource = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const result = await getAllMoneySource();
-      console.log(result)
       thunkApi.dispatch(setMoneySource(result));
     } catch (err) {
       thunkApi.dispatch(setMoneySource([]));

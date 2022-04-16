@@ -3,6 +3,7 @@ import testReducer from './reducer/test';
 import appReducer from './reducer/app';
 import userReducer from './reducer/user';
 import featureReducer from './reducer/feature';
+import transactionReducer from './reducer/transaction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   persistStore,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   app: appReducer,
   user: userReducer,
   feature: featureReducer,
+  transaction: transactionReducer,
 });
 
 const persistConfig = {
