@@ -100,13 +100,13 @@ export default function LoginScreen({ navigation }) {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                placeholder="Phone"
+                placeholder="Phone/Email"
                 placeholderTextColor={WHITE_COLOR}
                 style={styles.input}
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                keyboardType="phone-pad"
+                // keyboardType="phone-pad"
               />
             )}
             name="email"

@@ -27,7 +27,9 @@ export const signUp = createAsyncThunk(
           name: data.name,
         });
 
-        thunkApi.dispatch(setLogin(profileData as User));
+        thunkApi.dispatch(
+          setLogin({ ...(profileData as User), uid: currentUser?.uid }),
+        );
       }
     } catch (err) {
       Toast.show('Your information has been duplicated', {
@@ -56,7 +58,9 @@ export const signIn = createAsyncThunk(
 
       if (currentUser) {
         const profileData = await getProfile(currentUser.uid);
-        thunkApi.dispatch(setLogin(profileData as User));
+        thunkApi.dispatch(
+          setLogin({ ...(profileData as User), uid: currentUser?.uid }),
+        );
       }
     } catch (err) {
       Toast.show('Sign in failed', {
@@ -82,7 +86,7 @@ export const getCurrentProfile = createAsyncThunk(
       console.log(currentUser?.uid);
       const profile = await getProfile(currentUser?.uid || '');
       console.log(profile);
-      thunkApi.dispatch(setLogin(profile));
+      thunkApi.dispatch(setLogin({ ...profile, uid: currentUser?.uid }));
       payload.onSuccess?.();
     } catch (err) {
       thunkApi.dispatch(removeLogin());
@@ -94,6 +98,7 @@ export const getCurrentProfile = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    id: '' as any,
     data: {} as User | {},
     isLogged: false,
   },
@@ -101,6 +106,7 @@ const userSlice = createSlice({
     setLogin(state, action: PayloadAction<User>) {
       state.data = action.payload;
       state.isLogged = true;
+      state.id = action.payload.uid;
     },
     removeLogin(state) {
       state.data = {};

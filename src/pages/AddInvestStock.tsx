@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
   useWindowDimensions,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React from 'react';
 import BackArrow from '../components/BackArrow';
 import MyButton from '../components/Button';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
-import { PRIMARY_COLOR } from '../contants/Colors';
+import { PRIMARY_COLOR, WHITE_COLOR } from '../contants/Colors';
 import { VictoryArea, VictoryAxis, VictoryChart, VictoryTheme } from 'victory-native';
 
 export default function AddInvestStock({ navigation }) {
@@ -32,7 +33,7 @@ export default function AddInvestStock({ navigation }) {
           <Text style={styles.typeBtnText}>Sell</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <KeyboardAvoidingView>
         <View style={styles.input}>
           <Text style={styles.inputName}>Date</Text>
           <TextInput style={styles.inputField} />
@@ -63,7 +64,7 @@ export default function AddInvestStock({ navigation }) {
             style={{ wrap: styles.nextBtn, text: { color: 'black' } }}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
   },
   addImageIcon: {
     fontSize: 14,
+    color: WHITE_COLOR
   },
   nextBtn: {
     backgroundColor: 'white',

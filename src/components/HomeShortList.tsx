@@ -1,12 +1,15 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
-import { LOGO } from '../contants/Images';
 import {
+  ADD_MONEY_ICO,
+  EXCHANGE_MONEY_ICO,
+  WITHDRAW_MONEY_ICO,
+} from '../contants/Images';
+import {
+  BLUE_COLOR,
   GREEN_COLOR,
-  PRIMARY_COLOR,
   RED_COLOR,
   SECONDARY_BG_COLOR,
-  SECONDARY_COLOR,
   WHITE_COLOR,
 } from '../contants/Colors';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +34,16 @@ export default function HomeShortList() {
       {transaction.slice(0, 4).map(item => (
         <View style={styles.itemWrap} key={item.category + item.note}>
           <View style={styles.itemAvatar}>
-            <Image source={LOGO} style={styles.itemAvatarImg} />
+            <Image
+              source={
+                item.type == -1
+                  ? WITHDRAW_MONEY_ICO
+                  : item.type == 1
+                  ? ADD_MONEY_ICO
+                  : EXCHANGE_MONEY_ICO
+              }
+              style={styles.itemAvatarImg}
+            />
           </View>
           <View style={styles.itemBody}>
             <Text style={styles.itemTitle}>{item.note}</Text>
@@ -40,7 +52,18 @@ export default function HomeShortList() {
             </Text>
           </View>
           <View>
-            <Text style={styles.itemMoney}>{formatMoney(item.amount)}</Text>
+            <Text
+              style={{
+                ...styles.itemMoney,
+                color:
+                  item.type === 1
+                    ? GREEN_COLOR
+                    : item.type === -1
+                    ? RED_COLOR
+                    : BLUE_COLOR,
+              }}>
+              {formatMoney(item.amount)}
+            </Text>
           </View>
         </View>
       ))}

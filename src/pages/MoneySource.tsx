@@ -4,6 +4,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  Alert,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import BackArrow from '../components/BackArrow';
@@ -12,6 +14,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 import {
   BACKGROUND_COLOR,
+  RED_COLOR,
   SECONDARY_BG_COLOR,
   THIRD_BG_COLOR,
   WHITE_COLOR,
@@ -20,11 +23,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux';
 import { MoneySource } from '../models/MoneySource';
-import { getMoneySource } from '../redux/reducer/feature';
+import { deleteMoneySource, getMoneySource } from '../redux/reducer/feature';
 
 export default function MoneySourceScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const userID = useSelector<RootState>(state => state.user.id);
   const data = useSelector<RootState>(
     state => state.feature.moneySource,
   ) as MoneySource[];
@@ -37,6 +41,32 @@ export default function MoneySourceScreen() {
     navigation.navigate('AddMoneySource');
   };
 
+  const goToEditMoneySource = data => {
+    navigation.navigate('EditMoneySource', { source: data });
+  };
+
+  const removeMoneySource = (id: string) => {
+    dispatch(
+      deleteMoneySource({
+        data: id,
+      }),
+    );
+  };
+
+  const confirmDelete = (id: string) =>
+    Alert.alert(
+      'Remove money source',
+      'Do you agree to remove this money source?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => removeMoneySource(id) },
+      ],
+    );
+
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.header}>
@@ -46,26 +76,43 @@ export default function MoneySourceScreen() {
           <Icon name="plus" style={styles.addBtnIcon} />
         </TouchableOpacity>
       </View>
-      <View>
+      <ScrollView>
         {data.map(item => (
           <View style={styles.item} key={item.id}>
             <EntypoIcon
               name="database"
               style={{ ...styles.itemIcon, color: YELLOW_COLOR }}
             />
+
             <View style={styles.itemName}>
               <Text style={styles.title}>{item.name}</Text>
               <Text style={styles.subTitle}>{item.description}</Text>
             </View>
-            <TouchableOpacity style={styles.editBtn}>
-              <Icon name="edit" style={styles.itemIcon} />
-            </TouchableOpacity>
-            <View style={styles.dragBtn}>
-              <EntypoIcon name="menu" style={styles.itemIcon} />
+            <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
+              {item.created_by === userID && (
+                <TouchableOpacity
+                  style={styles.editBtn}
+                  onPress={() => goToEditMoneySource(item)}>
+                  <Icon name="edit" style={styles.itemIcon} />
+                </TouchableOpacity>
+              )}
+              {item.created_by === userID && (
+                <TouchableOpacity onPress={() => confirmDelete(item.id)}>
+                  <EntypoIcon
+                    name="trash"
+                    style={{ ...styles.itemIcon, color: RED_COLOR }}
+                  />
+                </TouchableOpacity>
+              )}
+              {item.created_by !== userID && (
+                <View style={styles.dragBtn}>
+                  <EntypoIcon name="menu" style={styles.itemIcon} />
+                </View>
+              )}
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -116,7 +163,6 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   editBtn: {
-    marginLeft: 'auto',
     marginRight: 20,
   },
   dragBtn: {},

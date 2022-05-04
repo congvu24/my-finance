@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   list: {
     padding: 4,
     backgroundColor: SECONDARY_BG_COLOR,
+    borderRadius: 5,
   },
 
   item: {
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingVertical: 5,
     marginBottom: 15,
+    borderBottomColor: THIRD_BG_COLOR,
   },
   itemTag: {
     backgroundColor: GREEN_COLOR,

@@ -9,13 +9,7 @@
  */
 
 import React from 'react';
-import {
-  ActivityIndicator,
-  StatusBar,
-  useColorScheme,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -33,12 +27,16 @@ import AddInvestGold from './src/pages/AddInvestGold';
 import AddInvestStock from './src/pages/AddInvestStock';
 import MoneySource from './src/pages/MoneySource';
 import AddMoneySource from './src/pages/AddMoneySource';
-import { BACKGROUND_COLOR, SECONDARY_BG_COLOR } from './src/contants/Colors';
+import { BACKGROUND_COLOR } from './src/contants/Colors';
 import Splash from './src/pages/Splash';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import LoadingModal from './src/components/LoadingModal';
 import { PersistGate } from 'redux-persist/integration/react';
 import Test from './src/pages/Test';
+import EditMoneySource from './src/pages/EditMoneySource';
+import OverviewInvestGold from './src/pages/OverviewInvest';
+import OverviewInvestCoin from './src/pages/OverviewInvestCoin';
+import CoinDetailScreen from './src/pages/CoinDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -113,6 +111,31 @@ const App = () => {
                 }}
               />
               <Stack.Screen name="AddMoneySource" component={AddMoneySource} />
+              <Stack.Screen
+                name="EditMoneySource"
+                component={EditMoneySource}
+              />
+              <Stack.Screen
+                name="OverviewInvestGold"
+                component={OverviewInvestGold}
+                options={{
+                  animation: 'fade_from_bottom',
+                }}
+              />
+              <Stack.Screen
+                name="OverviewInvestCoin"
+                component={OverviewInvestCoin}
+                options={{
+                  animation: 'fade_from_bottom',
+                }}
+              />
+              <Stack.Screen
+                name="CoinDetailScreen"
+                component={CoinDetailScreen}
+                options={{
+                  animation: 'fade_from_bottom',
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
           <LoadingModal />

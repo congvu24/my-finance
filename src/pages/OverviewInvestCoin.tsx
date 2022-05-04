@@ -13,9 +13,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux';
 import formatMoney from '../utils/formatMoney';
 
-export default function OverviewInvestGold() {
+export default function OverviewInvestCoin() {
   const transaction = useSelector<RootState>(
-    state => state.gold.transaction,
+    state => state.coin.transaction,
   ) as [];
 
   return (
@@ -29,7 +29,7 @@ export default function OverviewInvestGold() {
           <View style={styles.item} key={item.id}>
             <View style={styles.itemHeader}>
               <View style={styles.itemName}>
-                <Text style={styles.itemNameText}>GOLD</Text>
+                <Text style={styles.itemNameText}>{item.code}</Text>
                 <Text
                   style={
                     item.type > 0 ? styles.itemTypeText : styles.itemTypeTextRed

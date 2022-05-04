@@ -182,7 +182,6 @@ export default function AddTransactionScreen({ navigation }) {
                   mode={mode}
                   is24Hour={true}
                   onChange={(event, data) => {
-                    console.log(data);
                     if (data) {
                       if (mode === 'date') {
                         setValue('date', data);

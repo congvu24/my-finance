@@ -5,8 +5,10 @@ import { MoneySource } from '../../models/MoneySource';
 import {
   createMoneySource,
   getAllMoneySource,
+  removeMoneySource,
+  updateMoneySource,
 } from '../../services/MoneySource';
-import { CreateMoneySource } from '../../types/moneySource';
+import { CreateMoneySource, UpdateMoneySource } from '../../types/moneySource';
 import Toast from 'react-native-root-toast';
 import { offLoading, onLoading } from './app';
 import { PayloadWithCallback } from '../../types/utils';
@@ -45,6 +47,56 @@ export const addMoneySource = createAsyncThunk(
       payload.onSuccess?.();
     } catch (err) {
       Toast.show('Error while creating money source', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        textStyle: {
+          fontSize: 12,
+        },
+      });
+      payload.onFailed?.();
+    } finally {
+      thunkApi.dispatch(offLoading());
+    }
+  },
+);
+
+export const editMoneySource = createAsyncThunk(
+  'feature/editMoneySource',
+  async (payload: PayloadWithCallback<UpdateMoneySource>, thunkApi) => {
+    try {
+      thunkApi.dispatch(onLoading());
+      await updateMoneySource(payload.data.id, payload.data.data);
+      thunkApi.dispatch(getMoneySource());
+      payload.onSuccess?.();
+    } catch (err) {
+      Toast.show('Error while updating money source', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        textStyle: {
+          fontSize: 12,
+        },
+      });
+      payload.onFailed?.();
+    } finally {
+      thunkApi.dispatch(offLoading());
+    }
+  },
+);
+
+export const deleteMoneySource = createAsyncThunk(
+  'feature/deleteMoneySource',
+  async (payload: PayloadWithCallback<string>, thunkApi) => {
+    try {
+      thunkApi.dispatch(onLoading());
+      await removeMoneySource(payload.data);
+      thunkApi.dispatch(getMoneySource());
+      payload.onSuccess?.();
+    } catch (err) {
+      Toast.show('Error while removing money source', {
         duration: Toast.durations.SHORT,
         position: Toast.positions.TOP,
         shadow: true,

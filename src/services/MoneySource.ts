@@ -2,12 +2,11 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Collections } from '../contants/Collections';
 import { MoneySource } from '../models/MoneySource';
-import { CreateMoneySource } from '../types/moneySource';
+import { CreateMoneySource, UpdateMoneySource } from '../types/moneySource';
 
 const moneySourceColl = firestore().collection(Collections.MoneySource);
 
 export async function getAllMoneySource(): Promise<MoneySource[]> {
-  console.log(auth().currentUser?.uid);
   const common = (
     await moneySourceColl.where('created_by', '==', 'admin').get()
   ).docs.map(item => ({
@@ -35,4 +34,21 @@ export async function createMoneySource(
   });
 
   return (await ref.get()).data() as MoneySource;
+}
+
+export async function updateMoneySource(
+  id: string,
+  data: UpdateMoneySource,
+): Promise<MoneySource> {
+  await moneySourceColl.doc(id).update({
+    ...data,
+    created_by: auth().currentUser?.uid,
+  });
+  const ref = await moneySourceColl.doc(id);
+
+  return (await ref.get()).data() as MoneySource;
+}
+
+export async function removeMoneySource(id: string): Promise<any> {
+  await moneySourceColl.doc(id).delete();
 }
