@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addInvestCoin, getCoinPortfolio } from '../../services/Coin';
+import {
+  addInvestCoin,
+  getCoinHistoryPrice,
+  getCoinPortfolio,
+} from '../../services/Coin';
 import { AddInvestCoin } from '../../types/coin';
 import { PayloadWithCallback } from '../../types/utils';
 import { offLoading, onLoading } from './app';
@@ -31,6 +35,7 @@ export const getMyCoinPortfolio = createAsyncThunk(
             amount: item.amount,
             value: item.price,
             coinId: item.coinId,
+            symbol: item.symbol,
           };
           portfolio[item.code] = { ...balance };
         }
@@ -38,6 +43,20 @@ export const getMyCoinPortfolio = createAsyncThunk(
       thunkApi.dispatch(setTransaction(result));
       thunkApi.dispatch(setPortfolio(portfolio));
     } catch (err) {
+      // thunkApi.dispatch(setPortfolio(balance));
+    }
+  },
+);
+
+export const getCoinHistoryPriceRedux = createAsyncThunk(
+  'coin/getCoinHistoryPrice',
+  async (code, thunkApi) => {
+    try {
+      const result = await getCoinHistoryPrice(code);
+      thunkApi.dispatch(setChartData({ code: code, data: result }));
+    } catch (err) {
+      console.log(err);
+
       // thunkApi.dispatch(setPortfolio(balance));
     }
   },
@@ -85,11 +104,9 @@ export const startListenPrice = createAsyncThunk(
         if (parsedData.data) {
           const state = thunkApi.getState();
           let result = {};
-          const listKey = payload.map(item => item + 'USDC');
-          const listKeyT = payload.map(item => item + 'USDT');
 
           parsedData.data.forEach(item => {
-            if (listKey.includes(item.s) || listKeyT.includes(item.s)) {
+            if (payload.includes(item.s)) {
               result[item.s] = item;
             }
           });
@@ -110,6 +127,7 @@ const coinSlice = createSlice({
     transaction: [],
     portfolio: {},
     price: [],
+    chartData: {},
   },
   reducers: {
     setPortfolio(state, action: PayloadAction<any>) {
@@ -126,9 +144,20 @@ const coinSlice = createSlice({
       console.log('disconnected');
       globalSocket?.close();
     },
+    setChartData(state, action: PayloadAction<any>) {
+      state.chartData = {
+        ...state.chartData,
+        [action.payload.code]: action.payload.data,
+      };
+    },
   },
 });
 
-export const { setPortfolio, setTransaction, stopListenPrice, setPrice } =
-  coinSlice.actions;
+export const {
+  setPortfolio,
+  setTransaction,
+  stopListenPrice,
+  setPrice,
+  setChartData,
+} = coinSlice.actions;
 export default coinSlice.reducer;

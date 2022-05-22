@@ -34,7 +34,7 @@ export default function MonthSelection({ onMonthSelect }) {
         <TouchableOpacity onPress={onPreviousMonth}>
           <AntdIcon
             name="left"
-            style={{ ...styles.headerIcon, fontSize: 12 }}
+            style={{ ...styles.headerIcon, fontSize: 14 }}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={openMonthPicker}>
@@ -45,7 +45,7 @@ export default function MonthSelection({ onMonthSelect }) {
         <TouchableOpacity onPress={onNextMonth}>
           <AntdIcon
             name="right"
-            style={{ ...styles.headerIcon, fontSize: 12 }}
+            style={{ ...styles.headerIcon, fontSize: 14 }}
           />
         </TouchableOpacity>
       </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
     marginHorizontal: 5,

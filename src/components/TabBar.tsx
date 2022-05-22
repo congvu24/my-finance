@@ -64,7 +64,7 @@ export default function MyTabBar({ state, descriptors, navigation }) {
               style={{
                 color: WHITE_COLOR,
                 opacity: isFocused ? 1 : 0.5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: isFocused ? '500' : '400',
               }}>
               {label}

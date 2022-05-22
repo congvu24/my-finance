@@ -52,7 +52,7 @@ export const addMoneySource = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
       payload.onFailed?.();
@@ -77,7 +77,7 @@ export const editMoneySource = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
       payload.onFailed?.();
@@ -102,7 +102,7 @@ export const deleteMoneySource = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
       payload.onFailed?.();

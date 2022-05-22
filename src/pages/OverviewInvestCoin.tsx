@@ -12,6 +12,7 @@ import BackArrow from '../components/BackArrow';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux';
 import formatMoney from '../utils/formatMoney';
+import MyButton from '../components/Button';
 
 export default function OverviewInvestCoin() {
   const transaction = useSelector<RootState>(
@@ -88,23 +89,23 @@ const styles = StyleSheet.create({
   },
   itemNameText: {
     color: YELLOW_COLOR,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
   },
   itemTypeText: {
     color: GREEN_COLOR,
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 14,
   },
   itemTypeTextRed: {
     color: RED_COLOR,
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 14,
   },
   itemDateText: {
     color: WHITE_COLOR,
     opacity: 0.8,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
   },
   itemBody: {
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
   itemBodyTitle: {
     color: WHITE_COLOR,
     opacity: 0.6,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
   },
   itemFooter: {
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: WHITE_COLOR,
     marginLeft: 10,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
   },
 });

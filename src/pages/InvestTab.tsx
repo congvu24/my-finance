@@ -15,6 +15,7 @@ import {
   BACKGROUND_COLOR,
 } from '../contants/Colors';
 import InvestTabCoin from './InvestCoinTab';
+import InvestTabStock from './InvestStockTab';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ export default function InvestTab() {
       </View>
       {tab === 'gold' && <InvestTabGold />}
       {tab === 'coin' && <InvestTabCoin />}
-      {tab === 'stock' && <InvestTabGold />}
+      {tab === 'stock' && <InvestTabStock />}
     </SafeAreaView>
   );
 }
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   tabText: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: SECONDARY_BG_COLOR,
   },
   tabTextActive: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },

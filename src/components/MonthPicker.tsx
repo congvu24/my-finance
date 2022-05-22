@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headerText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   monthText: {
     color: WHITE_COLOR,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
   },
 });

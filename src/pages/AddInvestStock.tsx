@@ -72,7 +72,7 @@ export default function AddInvestStock({ navigation }) {
 const styles = StyleSheet.create({
   selectHeaderText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
   },
   selectHeader: {
     backgroundColor: 'grey',
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
   },
   selectText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
   },
   addImageBtn: {
     paddingHorizontal: 10,
   },
   addImageIcon: {
-    fontSize: 14,
+    fontSize: 16,
     color: WHITE_COLOR
   },
   nextBtn: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   inputName: {
     width: 60,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
   },
   wrap: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   typeBtnText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
   },
 

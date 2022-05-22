@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   recordTextDate: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: WHITE_COLOR,
     opacity: 0.8,
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   recordIn: {
-    fontSize: 13,
+    fontSize: 15,
     color: GREEN_COLOR,
     fontWeight: '500',
   },
   recordOut: {
-    fontSize: 13,
+    fontSize: 15,
     color: 'red',
     fontWeight: '500',
   },
@@ -118,18 +118,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemCategory: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
   itemSecond: { flex: 2 },
   itemTitle: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },
   itemSource: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
     color: WHITE_COLOR,
     opacity: 0.7,
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   itemOut: {
-    fontSize: 13,
+    fontSize: 15,
     color: RED_COLOR,
     fontWeight: '500',
   },
   itemIn: {
-    fontSize: 13,
+    fontSize: 15,
     color: GREEN_COLOR,
     fontWeight: '500',
   },

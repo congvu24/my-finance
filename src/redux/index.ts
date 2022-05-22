@@ -32,7 +32,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  blacklist: ['app', 'feature'],
+  blacklist: ['app', 'feature', 'gold'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

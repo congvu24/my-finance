@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   addBtnIcon: {
-    fontSize: 14,
+    fontSize: 16,
     color: WHITE_COLOR,
   },
 
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   title: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   dragBtn: {},
   itemIcon: {
-    fontSize: 14,
+    fontSize: 16,
     color: WHITE_COLOR,
   },
 });

@@ -3,6 +3,7 @@ export interface Coin {
   date: string;
   code: string;
   amount: number;
+  symbol: string;
   price: number;
   note: string;
   type: -1 | 0 | 1;

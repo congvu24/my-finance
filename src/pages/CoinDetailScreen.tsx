@@ -5,7 +5,7 @@ import {
   Image,
   useWindowDimensions,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   BACKGROUND_COLOR,
   BLUE_COLOR,
@@ -31,22 +31,39 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import formatMoney from '../utils/formatMoney';
 import { getCoinHistoryPrice } from '../services/Coin';
 import BackArrow from '../components/BackArrow';
+import MyButton from '../components/Button';
+import LineChart from '../components/LineChart';
+import { getCoinHistoryPriceRedux } from '../redux/reducer/coin';
 
-export default function CoinDetailScreen() {
+function CoinDetailScreen() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const route = useRoute();
-  const balance = route.params?.coin;
+  const currentCoin = route.params?.coin;
   const width = useWindowDimensions().width;
 
-  const [coinPrice, setCoinPrice] = useState([]);
+  // const [coinPrice, setCoinPrice] = useState([]);
   const currentPrice = useSelector<RootState>(state => state.coin.price);
+  const allBalance = useSelector<RootState>(state => state.coin.portfolio);
+
+  const [balance, setBalance] = useState(allBalance[currentCoin.code]);
+
+  const moveToAddInvestCoin = useCallback(() => {
+    navigation.navigate('AddInvestCoin', {
+      coin: { name: balance?.code, id: balance?.coinId },
+    });
+  }, [balance?.code]);
 
   useEffect(() => {
-    dispatch(getGoldPriceForChart());
-    getCoinHistoryPrice(balance.coinId).then(res => setCoinPrice(res));
+    setBalance(allBalance[currentCoin.code]);
+  }, [allBalance]);
+
+  useEffect(() => {
+    dispatch(getCoinHistoryPriceRedux(currentCoin.coinId));
+    // getCoinHistoryPrice(balance.coinId).then(res => setCoinPrice(res));
   }, []);
 
-  const price = currentPrice?.[balance.code + 'USDC'] ?? null;
+  const price = currentPrice?.[balance.symbol] ?? null;
 
   return (
     <View style={styles.wrap}>
@@ -54,65 +71,7 @@ export default function CoinDetailScreen() {
         <BackArrow />
       </View>
       <View style={styles.container}>
-        <VictoryChart
-          height={250}
-          width={width}
-          theme={VictoryTheme.material}
-          // maxDomain={{ x: 5, y: 100 }}
-          padding={{ top: 0, bottom: 0, right: 0, left: 0 }}
-          style={{
-            parent: {
-              width: '100%',
-              height: 'auto',
-              overflow: 'visible',
-            },
-          }}
-          scale={{ x: 'time', y: 'linear' }}>
-          <Defs>
-            <LinearGradient id="gradientFill" x1="0%" x2="0%" y1="0%" y2="100%">
-              <Stop offset="20%" stopColor={PRIMARY_COLOR} stopOpacity="0.3" />
-              <Stop offset="80%" stopColor={'transparent'} stopOpacity="0.3" />
-              <Stop offset="100%" stopColor={'transparent'} stopOpacity="0.1" />
-            </LinearGradient>
-
-            <LinearGradient
-              id="gradientFillRed"
-              x1="0%"
-              x2="0%"
-              y1="0%"
-              y2="100%">
-              <Stop offset="20%" stopColor={RED_COLOR} stopOpacity="0.3" />
-              <Stop offset="80%" stopColor={'transparent'} stopOpacity="0.3" />
-              <Stop offset="100%" stopColor={'transparent'} stopOpacity="0.1" />
-            </LinearGradient>
-          </Defs>
-
-          <VictoryAxis
-            style={{
-              axis: { stroke: 'transparent' },
-              ticks: { stroke: 'transparent' },
-              tickLabels: { fill: 'transparent' },
-              grid: { stroke: 'none' },
-            }}
-          />
-          {/* {goldPrice.length > 0 && ( */}
-          <VictoryArea
-            data={coinPrice}
-            style={{
-              data: {
-                stroke: PRIMARY_COLOR,
-                fill: 'url(#gradientFill)',
-                overflow: 'visible',
-              },
-            }}
-            animate={{
-              duration: 2000,
-              // onLoad: { duration: 6000 },
-            }}
-            interpolation="linear"
-          />
-          {/* )} */}
-        </VictoryChart>
+        <LineChart coin={currentCoin.coinId} />
       </View>
 
       <View style={styles.portfolio}>
@@ -173,9 +132,22 @@ export default function CoinDetailScreen() {
           </View>
         </View>
       </View>
+
+      <MyButton
+        text={'Add transaction'}
+        onPress={moveToAddInvestCoin}
+        style={{
+          wrap: {
+            borderRadius: 5,
+            margin: 10,
+          },
+        }}
+      />
     </View>
   );
 }
+
+export default React.memo(CoinDetailScreen);
 
 const styles = StyleSheet.create({
   portfolioList: {

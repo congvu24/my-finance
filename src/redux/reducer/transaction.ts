@@ -36,7 +36,7 @@ export const addTransaction = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
       payload.onFailed?.();

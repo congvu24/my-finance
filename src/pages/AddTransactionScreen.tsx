@@ -102,7 +102,7 @@ export default function AddTransactionScreen({ navigation }) {
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     }
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addImageIcon: {
-    fontSize: 14,
+    fontSize: 16,
     color: WHITE_COLOR,
   },
   nextBtn: {
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   },
   inputName: {
     width: 60,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     borderColor: THIRD_BG_COLOR,
   },
   typeBtnText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: WHITE_COLOR,
     opacity: 0.7,

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
 import {
   BACKGROUND_COLOR,
@@ -23,7 +23,6 @@ import _ from 'lodash';
 import SpendingGroup from '../components/SpendingGroup';
 import { Transaction } from '../models/Transaction';
 import formatMoney from '../utils/formatMoney';
-import MonthPicker from '../components/MonthPicker';
 import MonthSelection from '../components/MonthSelection';
 
 const tabs = [
@@ -246,7 +245,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   tabText: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
     opacity: 0.5,
@@ -260,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: SECONDARY_BG_COLOR,
   },
   tabTextActive: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },
@@ -289,7 +288,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
     marginHorizontal: 5,
@@ -312,22 +311,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   typeText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
   typeIncome: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: GREEN_COLOR,
   },
   typeOutcome: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: RED_COLOR,
   },
   typeSum: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: BLUE_COLOR,
   },

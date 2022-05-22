@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   historyAll: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400',
     color: WHITE_COLOR,
     opacity: 0.5,

@@ -3,6 +3,7 @@ export interface AddInvestCoin {
   amount: number;
   price: number;
   date: string;
+  symbol: string;
   created_by: string;
   description: string;
 }

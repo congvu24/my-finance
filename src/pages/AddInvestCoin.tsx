@@ -29,17 +29,18 @@ import Toast from 'react-native-root-toast';
 import { COIN_LIST } from '../contants/Coin';
 import CoinSelect from '../components/CoinSelect';
 import { addInvestCoinToFirebase } from '../redux/reducer/coin';
+import { useRoute } from '@react-navigation/native';
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
 export default function AddInvestCoin({ navigation }) {
   const dispatch = useDispatch();
-
+  const route = useRoute();
   const [type, setType] = useState(1);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [filter, setFilter] = useState('');
-  const [coin, setCoin] = useState('');
+  const [coin, setCoin] = useState(route?.params?.coin ?? '');
 
   const createTime = new Date();
 
@@ -77,6 +78,7 @@ export default function AddInvestCoin({ navigation }) {
         },
         data: {
           note: data.note,
+          symbol: coin.symbol,
           code: coin.name,
           coinId: coin.id,
           amount: parseFloat(data.amount),
@@ -108,7 +110,7 @@ export default function AddInvestCoin({ navigation }) {
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     }
@@ -297,13 +299,13 @@ const styles = StyleSheet.create({
   },
   indicate: {
     color: WHITE_COLOR,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     opacity: 0.6,
   },
   indicateValue: {
     color: WHITE_COLOR,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
   },
 
@@ -315,14 +317,14 @@ const styles = StyleSheet.create({
   time: {
     color: WHITE_COLOR,
     fontWeight: '600',
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 5,
     opacity: 0.8,
   },
   timeDescription: {
     color: WHITE_COLOR,
     fontWeight: '400',
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: 5,
     opacity: 0.6,
   },
@@ -374,7 +376,7 @@ const styles = StyleSheet.create({
   },
   selectHeaderText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
   },
   selectHeader: {
     backgroundColor: 'grey',
@@ -401,13 +403,13 @@ const styles = StyleSheet.create({
   },
   selectText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
   },
   addImageBtn: {
     paddingHorizontal: 10,
   },
   addImageIcon: {
-    fontSize: 14,
+    fontSize: 16,
   },
   nextBtn: {
     backgroundColor: BLUE_COLOR,
@@ -443,7 +445,7 @@ const styles = StyleSheet.create({
   },
   inputName: {
     width: 60,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
   },
@@ -485,7 +487,7 @@ const styles = StyleSheet.create({
     borderColor: WHITE_COLOR,
   },
   typeBtnText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: WHITE_COLOR,
   },

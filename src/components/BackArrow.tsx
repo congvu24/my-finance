@@ -10,7 +10,7 @@ export default function BackArrow({ ...props }) {
     navigation.goBack();
   };
   return (
-    <TouchableOpacity {...props} onPress={goBack}>
+    <TouchableOpacity {...props} onPress={goBack} style={{ padding: 2}}>
       <Icon name="left" style={styles.icon} />
     </TouchableOpacity>
   );
@@ -18,7 +18,7 @@ export default function BackArrow({ ...props }) {
 
 const styles = StyleSheet.create({
   icon: {
-    fontSize: 14,
+    fontSize: 18,
     color: WHITE_COLOR,
   },
 });

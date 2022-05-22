@@ -47,7 +47,7 @@ export default function SpendingCategory({ onChange }: { onChange: Function }) {
 const styles = StyleSheet.create({
   selectHeaderText: {
     color: WHITE_COLOR,
-    fontSize: 14,
+    fontSize: 16,
   },
   selectHeader: {
     backgroundColor: SECONDARY_BG_COLOR,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   selectText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     color: WHITE_COLOR,
   },
 });

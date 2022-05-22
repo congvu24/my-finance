@@ -26,7 +26,7 @@ export default function MyButtonWithIcon({
       color: 'white',
       fontWeight: '500',
       textAlign: 'center',
-      fontSize: 12,
+      fontSize: 14,
       ...style?.text,
     },
   });

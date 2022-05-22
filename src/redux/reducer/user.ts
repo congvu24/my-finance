@@ -38,7 +38,7 @@ export const signUp = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     } finally {
@@ -69,7 +69,7 @@ export const signIn = createAsyncThunk(
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     } finally {

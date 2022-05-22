@@ -73,7 +73,7 @@ export default function SignUpScreen({ navigation }) {
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     } else {
@@ -198,7 +198,7 @@ export default function SignUpScreen({ navigation }) {
               text="Connect with facebook"
               style={{
                 wrap: { backgroundColor: '#3b5998' },
-                text: { fontSize: 12 },
+                text: { fontSize: 14 },
               }}
               onPress={() => {}}
             />
@@ -209,7 +209,7 @@ export default function SignUpScreen({ navigation }) {
               text="Connect with Google"
               style={{
                 wrap: { backgroundColor: '#EA4335' },
-                text: { fontSize: 12 },
+                text: { fontSize: 14 },
               }}
               onPress={() => {}}
             />
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     borderBottomColor: THIRD_BG_COLOR,
-    fontSize: 13,
+    fontSize: 15,
     color: WHITE_COLOR,
   },
   loginBtn: { borderRadius: 5, marginTop: 20 },
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   subText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: PRIMARY_COLOR,
   },

@@ -64,7 +64,7 @@ export default function EditMoneySource() {
         shadow: true,
         animation: true,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       });
     } else {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   addBtnIcon: {
-    fontSize: 14,
+    fontSize: 16,
   },
 
   item: {
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   title: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: 'black',
   },
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   dragBtn: {},
   itemIcon: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'black',
   },
 
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     paddingVertical: 5,
-    fontSize: 12,
+    fontSize: 14,
     borderColor: THIRD_BG_COLOR,
     color: WHITE_COLOR,
   },

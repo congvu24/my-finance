@@ -15142,4 +15142,5 @@ export const COIN_LIST = DATA.map(item => ({
   name: item.name,
   logo: item.logo,
   id: item.cmcUniqueId,
+  symbol: item.symbol,
 }));

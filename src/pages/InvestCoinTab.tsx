@@ -29,7 +29,7 @@ import {
 import formatMoney from '../utils/formatMoney';
 import _ from 'lodash';
 
-export default function InvestTabCoin() {
+function InvestTabCoin() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -51,7 +51,11 @@ export default function InvestTabCoin() {
 
   useEffect(() => {
     if (!_.isEmpty(portfolio)) {
-      dispatch(startListenPrice(Object.keys(portfolio)));
+      dispatch(
+        startListenPrice(
+          Object.keys(portfolio).map(key => portfolio[key].symbol),
+        ),
+      );
     }
     () => dispatch(stopListenPrice());
   }, [portfolio]);
@@ -73,8 +77,7 @@ export default function InvestTabCoin() {
         <View style={styles.portfolioList}>
           {Object.keys(portfolio).map(key => {
             const balance = portfolio[key];
-            const price = currentPrice?.[key + 'USDC'] ?? null;
-
+            const price = currentPrice[balance.symbol];
             if (price) {
               return (
                 <TouchableOpacity
@@ -149,6 +152,8 @@ export default function InvestTabCoin() {
   );
 }
 
+export default React.memo(InvestTabCoin);
+
 const styles = StyleSheet.create({
   portfolioList: {},
   portfolioTitle: {
@@ -211,7 +216,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   itemInfoTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
     opacity: 0.6,
@@ -223,12 +228,12 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   itemInfoGreen: {
-    fontSize: 13,
+    fontSize: 15,
     color: GREEN_COLOR,
     fontWeight: '500',
   },
   itemInfoRed: {
-    fontSize: 13,
+    fontSize: 15,
     color: RED_COLOR,
     fontWeight: '500',
   },
@@ -239,7 +244,7 @@ const styles = StyleSheet.create({
   itemAmount: {
     fontWeight: '500',
     color: WHITE_COLOR,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'right',
   },
 
@@ -303,7 +308,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   tabText: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },
@@ -316,7 +321,7 @@ const styles = StyleSheet.create({
     backgroundColor: SECONDARY_BG_COLOR,
   },
   tabTextActive: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: WHITE_COLOR,
   },
@@ -356,7 +361,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
     // marginHorizontal: 5,

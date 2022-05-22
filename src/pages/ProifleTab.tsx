@@ -134,14 +134,14 @@ const styles = StyleSheet.create({
   promoteTitle: {
     fontWeight: '600',
     color: WHITE_COLOR,
-    fontSize: 14,
+    fontSize: 16,
   },
   promoteSubTitle: {
-    fontSize: 12,
+    fontSize: 14,
     color: WHITE_COLOR,
     opacity: 0.7,
   },
-  promoteRight: { marginLeft: 'auto', fontSize: 14, color: PRIMARY_COLOR },
+  promoteRight: { marginLeft: 'auto', fontSize: 16, color: PRIMARY_COLOR },
 
   wrap: {
     padding: 10,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   listTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     marginVertical: 10,
     color: WHITE_COLOR,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
   itemIcon: {
     fontWeight: '500',
-    fontSize: 14,
+    fontSize: 16,
     marginRight: 10,
     color: WHITE_COLOR,
   },
@@ -200,13 +200,13 @@ const styles = StyleSheet.create({
   itemRight: {
     marginLeft: 'auto',
     color: PRIMARY_COLOR,
-    fontSize: 14,
+    fontSize: 16,
   },
 
   version: {
     margin: 'auto',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     color: WHITE_COLOR,
     opacity: 0.7,
   },

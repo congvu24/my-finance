@@ -25,7 +25,7 @@ export default function MyButton({
       color: 'white',
       fontWeight: '500',
       textAlign: 'center',
-      fontSize: 12,
+      fontSize: 14,
       ...style?.text,
     },
   });

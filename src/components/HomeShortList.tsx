@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   itemTime: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     color: WHITE_COLOR,
     opacity: 0.5,

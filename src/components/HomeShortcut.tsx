@@ -19,9 +19,17 @@ export default function HomeShortcut() {
     navigation.navigate('MoneySource');
   };
 
+  const goToInvest = () => {
+    navigation.navigate('InvestTab');
+  };
+
+  const goToSpending = () => {
+    navigation.navigate('ManageTab');
+  };
+
   return (
     <View style={styles.shortcut}>
-      <View style={styles.shortcutBtn}>
+      <TouchableOpacity style={styles.shortcutBtn} onPress={goToSpending}>
         <View style={styles.shortcutIcon}>
           <AntdIcon
             name="profile"
@@ -29,8 +37,8 @@ export default function HomeShortcut() {
           />
         </View>
         <Text style={styles.shortcutText}>Spending</Text>
-      </View>
-      <View style={styles.shortcutBtn}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.shortcutBtn} onPress={goToInvest}>
         <View style={styles.shortcutIcon}>
           <AntdIcon
             name="linechart"
@@ -38,7 +46,7 @@ export default function HomeShortcut() {
           />
         </View>
         <Text style={styles.shortcutText}>Invest</Text>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.shortcutBtn} onPress={goToMoneySource}>
         <View style={styles.shortcutIcon}>
           <AntdIcon name="wallet" style={{ fontSize: 18, color: RED_COLOR }} />

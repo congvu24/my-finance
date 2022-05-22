@@ -12,9 +12,16 @@ import { OVERVIEW_BG } from '../contants/Images';
 import { RootState } from '../redux';
 import { useSelector } from 'react-redux';
 import { User } from '../models/User';
+import formatMoney from '../utils/formatMoney';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeOverview() {
+  const navigation = useNavigation();
   const userData = useSelector<RootState>(state => state.user.data) as User;
+
+  const goToOverviewSpending = () => {
+    navigation.navigate('OverviewSpending');
+  };
 
   return (
     <View style={styles.overview}>
@@ -26,15 +33,17 @@ export default function HomeOverview() {
         style={styles.overviewBg}>
         <View style={styles.balance}>
           <Text style={styles.yourBalance}>Your balance</Text>
-          <Text style={styles.money}>250.000.000 VND</Text>
-          <TouchableOpacity style={styles.overviewBtn}>
+          <Text style={styles.money}>{formatMoney(250000000)}</Text>
+          <TouchableOpacity
+            style={styles.overviewBtn}
+            onPress={goToOverviewSpending}>
             <Text style={styles.overviewBtnText}>
               View your balance overview
             </Text>
             <View style={styles.overviewBtnIcon}>
               <Icon
                 name="chevron-right"
-                style={{ fontSize: 14, color: WHITE_COLOR, opacity: 0.8 }}
+                style={{ fontSize: 16, color: WHITE_COLOR, opacity: 0.8 }}
               />
             </View>
           </TouchableOpacity>
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
   },
   overviewBtnText: {
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: 14,
     color: 'white',
     opacity: 0.8,
   },
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
   },
   yourBalance: {
     fontWeight: '400',
-    fontSize: 14,
+    fontSize: 16,
     color: WHITE_COLOR,
   },
   money: {

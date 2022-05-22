@@ -11,7 +11,7 @@ export async function getGoldPrice() {
   const response = await axios.get(
     'https://api.investing.com/api/financialdata/8830/historical/chart/?interval=P1M&pointscount=70',
   );
-
+  console.log(response);
   const data = response.data.data.map(item => ({
     x: item[0],
     y: item[4],

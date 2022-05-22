@@ -93,7 +93,6 @@ export const startListenPrice = createAsyncThunk(
       };
 
       globalSocket.onmessage = ({ data }) => {
-        console.log(data);
         const parsedData = JSON.parse(data);
         if (parsedData.data && parsedData.event === 'bbo') {
           return thunkApi.dispatch(
