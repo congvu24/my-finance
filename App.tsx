@@ -37,6 +37,7 @@ import EditMoneySource from './src/pages/EditMoneySource';
 import OverviewInvestGold from './src/pages/OverviewInvest';
 import OverviewInvestCoin from './src/pages/OverviewInvestCoin';
 import CoinDetailScreen from './src/pages/CoinDetailScreen';
+import SettingSpending from './src/pages/SettingSpending';
 
 const Stack = createNativeStackNavigator();
 
@@ -135,6 +136,10 @@ const App = () => {
                 options={{
                   animation: 'fade_from_bottom',
                 }}
+              />
+              <Stack.Screen
+                name="SettingSpending"
+                component={SettingSpending}
               />
             </Stack.Navigator>
           </NavigationContainer>

@@ -14,7 +14,9 @@ import {
   GREEN_COLOR,
   RED_COLOR,
   SECONDARY_BG_COLOR,
+  THIRD_BG_COLOR,
   WHITE_COLOR,
+  YELLOW_COLOR,
 } from '../contants/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../redux/reducer/transaction';
@@ -24,6 +26,9 @@ import SpendingGroup from '../components/SpendingGroup';
 import { Transaction } from '../models/Transaction';
 import formatMoney from '../utils/formatMoney';
 import MonthSelection from '../components/MonthSelection';
+import YearSelection from '../components/YearSelection';
+import Icon from 'react-native-vector-icons/AntDesign';
+import AnnounceBar from '../components/AnnounceBar';
 
 const tabs = [
   {
@@ -66,6 +71,10 @@ export default function SpendingTab({ navigation }) {
     setYear(selectedYear);
   };
 
+  const onYearSelect = selectedYear => {
+    setYear(selectedYear);
+  };
+
   useEffect(() => {
     dispatch(getTransactions());
   }, []);
@@ -73,7 +82,9 @@ export default function SpendingTab({ navigation }) {
   const groups = _.groupBy(
     data.filter(item => {
       const date = new Date(parseInt(item.date));
-      return date.getMonth() === month && date.getFullYear() === year;
+      return tab !== 'monthly'
+        ? date.getMonth() === month && date.getFullYear() === year
+        : date.getFullYear() === year;
     }),
     item => {
       const date = new Date(parseInt(item.date));
@@ -104,8 +115,21 @@ export default function SpendingTab({ navigation }) {
   useEffect(() => {
     let sum1 = 0;
     let sum2 = 0;
+    let filterData = [];
 
-    data.forEach(item => {
+    if (tab === 'monthly') {
+      filterData = data.filter(item => {
+        const date = new Date(parseInt(item.date));
+        return date.getFullYear() === year;
+      });
+    } else {
+      filterData = data.filter(item => {
+        const date = new Date(parseInt(item.date));
+        return date.getMonth() === month && date.getFullYear() === year;
+      });
+    }
+
+    filterData.forEach(item => {
       if (item.type > 0) {
         sum1 = sum1 + item.amount;
       } else if (item.type < 0) {
@@ -114,12 +138,13 @@ export default function SpendingTab({ navigation }) {
     });
     setSumOut(sum2);
     setSumIn(sum1);
-  }, [data]);
+  }, [data, month, year]);
 
   return (
     <SafeAreaView style={styles.wrap}>
       <View style={styles.header}>
-        <MonthSelection onMonthSelect={onMonthSelect} />
+        {tab === 'monthly' && <YearSelection onYearSelect={onYearSelect} />}
+        {tab !== 'monthly' && <MonthSelection onMonthSelect={onMonthSelect} />}
         <View style={styles.headerTool}>
           <TouchableOpacity>
             <AntdIcon name="staro" style={styles.headerIcon} />
@@ -127,7 +152,10 @@ export default function SpendingTab({ navigation }) {
           <TouchableOpacity>
             <AntdIcon name="search1" style={styles.headerIcon} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('SettingSpending');
+            }}>
             <AntdIcon name="setting" style={styles.headerIcon} />
           </TouchableOpacity>
         </View>
@@ -162,6 +190,15 @@ export default function SpendingTab({ navigation }) {
         </View>
       </View>
 
+      {/* <NoticeBar
+        onPress={() => console.log('hello')}
+        marqueeProps={{ loop: true, style: { fontSize: 12, color: 'red' } }}>
+        Notice: The arrival time of incomes and transfers of Yu 'E Bao will be
+        delayed during National Day.
+      </NoticeBar> */}
+
+      <AnnounceBar />
+      
       {Object.keys(groups).length === 0 && (
         <View style={{ marginTop: 30, marginHorizontal: 'auto' }}>
           <Text
@@ -171,9 +208,11 @@ export default function SpendingTab({ navigation }) {
         </View>
       )}
       <ScrollView>
-        {Object.keys(groups).map(key => (
-          <SpendingGroup group={groups[key]} keyName={key} key={key} />
-        ))}
+        {Object.keys(groups)
+          .sort((a, b) => a - b)
+          .map(key => (
+            <SpendingGroup group={groups[key]} keyName={key} key={key} />
+          ))}
       </ScrollView>
 
       <View style={styles.float}>
@@ -199,10 +238,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   floatBtn: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     backgroundColor: GREEN_COLOR,
-    borderRadius: 25,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#171717',
@@ -213,8 +252,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   floatBtnSmall: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     backgroundColor: BLUE_COLOR,
     borderRadius: 25,
     justifyContent: 'center',
@@ -229,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   floatIcon: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'white',
   },
 
@@ -276,7 +315,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerIcon: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
     color: WHITE_COLOR,
   },
@@ -329,5 +368,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     color: BLUE_COLOR,
+  },
+  recordWrap: {
+    paddingBottom: 50,
   },
 });

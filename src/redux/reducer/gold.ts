@@ -50,6 +50,7 @@ export const getGoldPriceForChart = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const result = await getGoldPrice();
+      console.log(result);
       thunkApi.dispatch(setData(result));
     } catch (err) {
       thunkApi.dispatch(setData([]));

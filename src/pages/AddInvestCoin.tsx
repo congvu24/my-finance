@@ -7,6 +7,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Image,
+  ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import BackArrow from '../components/BackArrow';
@@ -17,6 +19,7 @@ import {
   BACKGROUND_COLOR,
   BLUE_COLOR,
   GREEN_COLOR,
+  RED_COLOR,
   SECONDARY_BG_COLOR,
   THIRD_BG_COLOR,
   WHITE_COLOR,
@@ -30,17 +33,23 @@ import { COIN_LIST } from '../contants/Coin';
 import CoinSelect from '../components/CoinSelect';
 import { addInvestCoinToFirebase } from '../redux/reducer/coin';
 import { useRoute } from '@react-navigation/native';
+import formatMoney from '../utils/formatMoney';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { uploadFile } from '../services/Image';
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
 export default function AddInvestCoin({ navigation }) {
   const dispatch = useDispatch();
+  const currentPrice = useSelector<RootState>(state => state.coin.price);
+
   const route = useRoute();
   const [type, setType] = useState(1);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [filter, setFilter] = useState('');
   const [coin, setCoin] = useState(route?.params?.coin ?? '');
+  const [image, setImage] = useState('');
 
   const createTime = new Date();
 
@@ -85,6 +94,7 @@ export default function AddInvestCoin({ navigation }) {
           price: parseFloat(data.price),
           type: type,
           date: finalDate,
+          image: image,
         },
       }),
     );
@@ -130,164 +140,269 @@ export default function AddInvestCoin({ navigation }) {
     // };
   }, []);
 
+  const pickImage = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+      });
+      if (result.assets && result.assets.length > 0) {
+        const url = await uploadFile(result.assets[0]);
+        setImage(url);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const price = currentPrice?.[coin?.symbol] ?? null;
+
   return (
     <SafeAreaView style={styles.wrap}>
-      <KeyboardAvoidingView
-        behavior="position"
-        keyboardVerticalOffset={keyboardVerticalOffset}>
-        <View style={styles.header}>
-          <BackArrow />
-          <Text style={styles.typeText}>Crypto Investment</Text>
-        </View>
-        <View style={styles.wrapType}>
-          <TouchableOpacity
-            style={type == 1 ? styles.typeBtnActive : styles.typeBtn}
-            onPress={() => setType(1)}>
-            <Text style={styles.typeBtnText}>Buy</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={type == -1 ? styles.typeBtnActive : styles.typeBtn}
-            onPress={() => setType(-1)}>
-            <Text style={styles.typeBtnText}>Sell</Text>
-          </TouchableOpacity>
-        </View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { value } }) => (
-            <View style={styles.input}>
-              <Text style={styles.inputName}>Date</Text>
-              <View style={styles.dateString}>
-                <TouchableOpacity onPress={() => onClickTime(false)}>
-                  <Text style={[styles.inputField, { borderBottomWidth: 0 }]}>
-                    {new Date(value).toLocaleDateString()}
+      <ScrollView>
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}>
+          <View style={styles.header}>
+            <BackArrow />
+            <Text style={styles.typeText}>Crypto Investment</Text>
+          </View>
+
+          {coin !== '' && price && (
+            <View style={styles.portfolio}>
+              <View style={styles.containerPrice}>
+                <View style={styles.priceSection}>
+                  {/* <View style={styles.priceWrap}>
+              <Image
+                source={currentPrice?.pc_col === 'redFont' ? DSC_ICO : INC_ICO}
+                style={styles.priceIcon}
+              />
+            </View> */}
+                  <Text
+                    style={{
+                      ...styles.price,
+                      color:
+                        currentPrice?.pc_col === 'redFont'
+                          ? RED_COLOR
+                          : GREEN_COLOR,
+                    }}>
+                    {formatMoney(price?.c)}
                   </Text>
-                </TouchableOpacity>
-                <Text> </Text>
-                <TouchableOpacity onPress={() => onClickTime(true)}>
-                  <Text style={[styles.inputField, { borderBottomWidth: 0 }]}>
-                    {new Date(value).toLocaleTimeString()}
+                  {/* <Text
+              style={{
+                ...styles.priceChange,
+                color:
+                  currentPrice?.pc_col === 'redFont' ? RED_COLOR : GREEN_COLOR,
+              }}>
+              ({formatMoney(currentPrice?.pc)})
+            </Text> */}
+                </View>
+                <View style={styles.timeSection}>
+                  <Text>High: </Text>
+                  <Text>{parseFloat(price.h).toFixed(2)}</Text>
+                </View>
+                <View style={styles.timeSection}>
+                  <Text>Low: </Text>
+                  <Text>{parseFloat(price.l).toFixed(2)}</Text>
+                </View>
+                <View style={styles.timeSection}>
+                  <Text>Volumn: </Text>
+                  <Text>{parseFloat(price.v).toFixed(2)}</Text>
+                </View>
+                <View style={styles.timeSection}>
+                  <Icon
+                    name="clockcircleo"
+                    style={{ color: WHITE_COLOR, fontWeight: '700' }}
+                  />
+                  <Text style={styles.time}>
+                    {new Date(price?.E).toLocaleTimeString()}
                   </Text>
+                  <Text style={styles.timeDescription}>
+                    Real-time Data. Currency in USD
+                  </Text>
+                </View>
+                {/* <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Open: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.bid}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>High: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.high}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Low: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.low}</Text>
+          </View> */}
+              </View>
+            </View>
+          )}
+
+          <View style={styles.wrapType}>
+            <TouchableOpacity
+              style={type == 1 ? styles.typeBtnActive : styles.typeBtn}
+              onPress={() => setType(1)}>
+              <Text style={styles.typeBtnText}>Buy</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={type == -1 ? styles.typeBtnActive : styles.typeBtn}
+              onPress={() => setType(-1)}>
+              <Text style={styles.typeBtnText}>Sell</Text>
+            </TouchableOpacity>
+          </View>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { value } }) => (
+              <View style={styles.input}>
+                <Text style={styles.inputName}>Date</Text>
+                <View style={styles.dateString}>
+                  <TouchableOpacity onPress={() => onClickTime(false)}>
+                    <Text style={[styles.inputField, { borderBottomWidth: 0 }]}>
+                      {new Date(value).toLocaleDateString()}
+                    </Text>
+                  </TouchableOpacity>
+                  <Text> </Text>
+                  <TouchableOpacity onPress={() => onClickTime(true)}>
+                    <Text style={[styles.inputField, { borderBottomWidth: 0 }]}>
+                      {new Date(value).toLocaleTimeString()}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={new Date()}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={(event, data) => {
+                      if (data) {
+                        if (mode === 'date') {
+                          setValue('date', data);
+                        } else {
+                          setValue('time', data);
+                        }
+                      }
+                      onCancelTime();
+                    }}
+                    onTouchCancel={onCancelTime}
+                  />
+                )}
+              </View>
+            )}
+            name="date"
+          />
+
+          <CoinSelect
+            data={COIN_LIST.filter(item =>
+              item.name.toLowerCase().includes(filter.toLowerCase()),
+            )}
+            onSelect={onSelectCoin}
+            show={filter !== ''}
+            renderChildren={() => (
+              <View style={styles.input}>
+                <Text style={styles.inputName}>Coin</Text>
+                <TextInput
+                  style={[styles.inputField]}
+                  placeholderTextColor={WHITE_COLOR}
+                  placeholder={coin?.name}
+                  onChangeText={value => setFilter(value)}
+                />
+              </View>
+            )}
+          />
+
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              min: 0,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View style={styles.input}>
+                <Text style={styles.inputName}>Amount</Text>
+                <TextInput
+                  style={styles.inputField}
+                  keyboardType="numeric"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+                {coin != '' && <Text>{coin?.name}</Text>}
+              </View>
+            )}
+            name="amount"
+          />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              min: 0,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View style={styles.input}>
+                <Text style={styles.inputName}>Price</Text>
+                <TextInput
+                  style={styles.inputField}
+                  keyboardType="numeric"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                />
+                <Text>$</Text>
+              </View>
+            )}
+            name="price"
+          />
+          <Controller
+            control={control}
+            rules={{
+              required: false,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View style={styles.input}>
+                <Text style={styles.inputName}>Note</Text>
+                <TextInput
+                  style={styles.inputField}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+                <TouchableOpacity
+                  style={styles.addImageBtn}
+                  onPress={pickImage}>
+                  <Icon name="camera" style={styles.addImageIcon} />
                 </TouchableOpacity>
               </View>
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={new Date()}
-                  mode={mode}
-                  is24Hour={true}
-                  onChange={(event, data) => {
-                    if (data) {
-                      if (mode === 'date') {
-                        setValue('date', data);
-                      } else {
-                        setValue('time', data);
-                      }
-                    }
-                    onCancelTime();
-                  }}
-                  onTouchCancel={onCancelTime}
-                />
-              )}
-            </View>
-          )}
-          name="date"
-        />
-
-        <CoinSelect
-          data={COIN_LIST.filter(item =>
-            item.name.toLowerCase().includes(filter.toLowerCase()),
-          )}
-          onSelect={onSelectCoin}
-          show={filter !== ''}
-          renderChildren={() => (
-            <View style={styles.input}>
-              <Text style={styles.inputName}>Coin</Text>
-              <TextInput
-                style={[styles.inputField]}
-                placeholderTextColor={WHITE_COLOR}
-                placeholder={coin?.name}
-                onChangeText={value => setFilter(value)}
-              />
-            </View>
-          )}
-        />
-
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-            min: 0,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.input}>
-              <Text style={styles.inputName}>Amount</Text>
-              <TextInput
-                style={styles.inputField}
-                keyboardType="numeric"
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-              />
-            </View>
-          )}
-          name="amount"
-        />
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-            min: 0,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.input}>
-              <Text style={styles.inputName}>Price</Text>
-              <TextInput
-                style={styles.inputField}
-                keyboardType="numeric"
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-              />
-            </View>
-          )}
-          name="price"
-        />
-        <Controller
-          control={control}
-          rules={{
-            required: false,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.input}>
-              <Text style={styles.inputName}>Note</Text>
-              <TextInput
-                style={styles.inputField}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-              <TouchableOpacity style={styles.addImageBtn}>
-                <Icon name="camera" style={styles.addImageIcon} />
-              </TouchableOpacity>
-            </View>
-          )}
-          name="note"
-        />
-        <View style={styles.saveWrap}>
-          <MyButton
-            text={'Save'}
-            style={{ wrap: styles.saveBtn, text: {} }}
-            onPress={onPressSubmit}
+            )}
+            name="note"
           />
-          <MyButton
-            text={'Next'}
-            style={{ wrap: styles.nextBtn, text: { color: WHITE_COLOR } }}
-          />
-        </View>
-      </KeyboardAvoidingView>
+
+          {image !== '' && (
+            <View style={styles.imageWrap}>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: image,
+                }}
+              />
+            </View>
+          )}
+
+          <View style={styles.saveWrap}>
+            <MyButton
+              text={'Save'}
+              style={{ wrap: styles.saveBtn, text: {} }}
+              onPress={onPressSubmit}
+            />
+            {/* <MyButton
+              text={'Next'}
+              style={{ wrap: styles.nextBtn, text: { color: WHITE_COLOR } }}
+            /> */}
+          </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -409,7 +524,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addImageIcon: {
-    fontSize: 16,
+    fontSize: 20,
   },
   nextBtn: {
     backgroundColor: BLUE_COLOR,
@@ -433,7 +548,7 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginVertical: 5,
+    marginVertical: 10,
     color: WHITE_COLOR,
   },
   inputField: {
@@ -444,7 +559,7 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   inputName: {
-    width: 60,
+    width: 80,
     fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
@@ -490,5 +605,34 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: WHITE_COLOR,
+  },
+
+  containerPrice: {
+    padding: 20,
+    marginVertical: 10,
+    marginTop: 20,
+    backgroundColor: SECONDARY_BG_COLOR,
+    borderRadius: 5,
+  },
+  portfolio: {
+    padding: 10,
+  },
+  portfolioList: {
+    paddingVertical: 10,
+  },
+  portfolioTitle: {
+    color: WHITE_COLOR,
+    fontWeight: '500',
+  },
+  imageWrap: {
+    width: '90%',
+    height: 200,
+    maxHeight: 200,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

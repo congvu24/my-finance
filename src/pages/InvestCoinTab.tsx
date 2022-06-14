@@ -260,10 +260,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   floatBtn: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     backgroundColor: GREEN_COLOR,
-    borderRadius: 25,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#171717',
@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   floatBtnSmall: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     backgroundColor: BLUE_COLOR,
     borderRadius: 25,
     justifyContent: 'center',
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   floatIcon: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'white',
   },
 

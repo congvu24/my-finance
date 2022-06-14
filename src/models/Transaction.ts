@@ -7,4 +7,5 @@ export interface Transaction {
   note: string;
   type: -1 | 0 | 1;
   created_by: string;
+  image: string;
 }

@@ -21,6 +21,7 @@ import HomeShortcut from '../components/HomeShortcut';
 import { removeLogin } from '../redux/reducer/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux';
+import AnnounceBar from '../components/AnnounceBar';
 
 export default function HomeTab({ navigation }) {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function HomeTab({ navigation }) {
           <View>
             <Icon name="text" style={styles.drawerBtn} />
           </View>
-          <TouchableOpacity style={styles.avatarWrap} onPress={signOut}>
+          <TouchableOpacity style={styles.avatarWrap}>
             <Image source={LOGO} style={styles.avatar} />
           </TouchableOpacity>
         </View>
@@ -57,6 +58,7 @@ export default function HomeTab({ navigation }) {
             <Text style={styles.historyAll}>See all</Text>
           </TouchableOpacity>
         </View>
+        <AnnounceBar />
         <HomeShortList />
       </ScrollView>
     </SafeAreaView>

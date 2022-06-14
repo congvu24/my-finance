@@ -50,12 +50,14 @@ export default function OverviewSpending({ navigation }) {
 
   useEffect(() => {
     if (data) {
-      const dataFilter = data.filter(
-        item =>
+      const dataFilter = data.filter(item => {
+        const date = new Date(parseInt(item.date));
+        return (
           item.type === type &&
-          new Date(parseInt(item.date)).getMonth() === month &&
-          new Date(parseInt(item.date)).getFullYear() === year,
-      );
+          date.getMonth() === month &&
+          date.getFullYear() === year
+        );
+      });
       let groups = _.groupBy(dataFilter, 'category');
       let sumAll = 0;
       dataFilter.forEach(item => (sumAll += item.amount));

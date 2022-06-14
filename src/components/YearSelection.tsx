@@ -2,54 +2,50 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useRef, useState } from 'react';
 import AntdIcon from 'react-native-vector-icons/AntDesign';
 import { WHITE_COLOR } from '../contants/Colors';
-import MonthPicker from './MonthPicker';
+import YearPicker from './YearPicker';
 
-export default function MonthSelection({ onMonthSelect }) {
-  const refMonthPicker = useRef();
-  const [month, setMonth] = useState(new Date().getMonth());
+export default function YearSelection({ onYearSelect }) {
+  const refYearPicker = useRef();
   const [year, setYear] = useState(new Date().getFullYear());
 
   const openMonthPicker = () => {
-    refMonthPicker.current?.open();
+    refYearPicker.current?.open();
   };
 
-  const onSelect = (selectedMonth, selectedYear) => {
-    setMonth(selectedMonth);
+  const onSelect = selectedYear => {
     setYear(selectedYear);
 
-    onMonthSelect(selectedMonth, selectedYear);
+    onYearSelect(selectedYear);
   };
 
-  const onNextMonth = () => {
-    refMonthPicker.current?.nextMonth();
+  const onNextYear = () => {
+    refYearPicker.current?.nextYear();
   };
 
-  const onPreviousMonth = () => {
-    refMonthPicker.current?.previousMonth();
+  const onPreviousYear = () => {
+    refYearPicker.current?.previousYear();
   };
 
   return (
     <View style={styles.wrap}>
       <View style={styles.headerMonth}>
-        <TouchableOpacity onPress={onPreviousMonth}>
+        <TouchableOpacity onPress={onPreviousYear}>
           <AntdIcon
             name="left"
             style={{ ...styles.headerIcon, fontSize: 20 }}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={openMonthPicker}>
-          <Text style={styles.headerText}>
-            {month + 1}.{year}
-          </Text>
+          <Text style={styles.headerText}>{year}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onNextMonth}>
+        <TouchableOpacity onPress={onNextYear}>
           <AntdIcon
             name="right"
             style={{ ...styles.headerIcon, fontSize: 20 }}
           />
         </TouchableOpacity>
       </View>
-      <MonthPicker ref={refMonthPicker} onSelect={onSelect} />
+      <YearPicker ref={refYearPicker} onSelect={onSelect} />
     </View>
   );
 }

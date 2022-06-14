@@ -14,6 +14,7 @@ import {
   BLUE_COLOR,
   GREEN_COLOR,
   PRIMARY_COLOR,
+  RED_COLOR,
   SECONDARY_BG_COLOR,
   THIRD_BG_COLOR,
   WHITE_COLOR,
@@ -36,6 +37,8 @@ import {
 } from '../redux/reducer/gold';
 import { RootState } from '../redux';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/AntDesign';
+import formatMoney from '../utils/formatMoney';
 
 function InvestTabGold() {
   const dispatch = useDispatch();
@@ -72,6 +75,12 @@ function InvestTabGold() {
           height={250}
           width={width}
           theme={VictoryTheme.material}
+          maxDomain={{
+            y: 2100,
+          }}
+          minDomain={{
+            y: 1000,
+          }}
           // maxDomain={{ x: 5, y: 100 }}
           padding={{ top: 0, bottom: 0, right: 0, left: 0 }}
           style={{
@@ -116,6 +125,60 @@ function InvestTabGold() {
           />
           {/* )} */}
         </VictoryChart>
+      </View>
+
+      <View style={styles.portfolio}>
+        <Text style={styles.portfolioTitle}>Gold price</Text>
+        <View style={styles.containerPrice}>
+          <View style={styles.priceSection}>
+            {/* <View style={styles.priceWrap}>
+              <Image
+                source={currentPrice?.pc_col === 'redFont' ? DSC_ICO : INC_ICO}
+                style={styles.priceIcon}
+              />
+            </View> */}
+            <Text
+              style={{
+                ...styles.price,
+                color:
+                  currentPrice?.pc_col === 'redFont' ? RED_COLOR : GREEN_COLOR,
+              }}>
+              {formatMoney(currentPrice?.last_numeric)}
+            </Text>
+            <Text
+              style={{
+                ...styles.priceChange,
+                color:
+                  currentPrice?.pc_col === 'redFont' ? RED_COLOR : GREEN_COLOR,
+              }}>
+              ({formatMoney(currentPrice?.pc)})
+            </Text>
+          </View>
+          <View style={styles.timeSection}>
+            <Icon
+              name="clockcircleo"
+              style={{ color: WHITE_COLOR, fontWeight: '700' }}
+            />
+            <Text style={styles.time}>
+              {new Date(currentPrice?.ts).toLocaleTimeString()}
+            </Text>
+            <Text style={styles.timeDescription}>
+              Real-time Data. Currency in USD
+            </Text>
+          </View>
+          {/* <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Open: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.bid}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>High: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.high}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Low: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.low}</Text>
+          </View> */}
+        </View>
       </View>
 
       <View style={styles.portfolio}>
@@ -299,10 +362,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   floatBtn: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     backgroundColor: GREEN_COLOR,
-    borderRadius: 25,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#171717',
@@ -313,8 +376,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   floatBtnSmall: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     backgroundColor: BLUE_COLOR,
     borderRadius: 25,
     justifyContent: 'center',
@@ -329,7 +392,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   floatIcon: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'white',
   },
 
@@ -420,5 +483,71 @@ const styles = StyleSheet.create({
     // backgroundColor: '#f5fcff',
     // margin: 20,
     // padding: 10,
+  },
+
+  priceSection: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 5,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: GREEN_COLOR,
+    marginRight: 10,
+  },
+  priceChange: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: GREEN_COLOR,
+    opacity: 0.8,
+  },
+  priceWrap: {
+    width: 25,
+    height: 30,
+    marginRight: 5,
+  },
+  priceIcon: {
+    // transform: [{ scale: 0.3 }],
+    aspectRatio: 1,
+    width: '100%',
+    height: undefined,
+  },
+  containerPrice: {
+    padding: 20,
+    marginVertical: 10,
+    marginTop: 20,
+    backgroundColor: SECONDARY_BG_COLOR,
+    borderRadius: 5,
+  },
+
+  dateString: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+    borderBottomWidth: 1,
+    flex: 1,
+    padding: 0,
+    color: WHITE_COLOR,
+    borderColor: THIRD_BG_COLOR,
+  },
+  timeSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  time: {
+    color: WHITE_COLOR,
+    fontWeight: '600',
+    fontSize: 14,
+    marginLeft: 5,
+    opacity: 0.8,
+  },
+  timeDescription: {
+    color: WHITE_COLOR,
+    fontWeight: '400',
+    fontSize: 14,
+    marginLeft: 5,
+    opacity: 0.6,
   },
 });

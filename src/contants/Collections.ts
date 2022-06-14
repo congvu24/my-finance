@@ -5,4 +5,5 @@ export const Collections = {
   Transaction: 'transaction',
   Gold: 'gold',
   Coin: 'coin',
+  Setting: 'setting',
 };

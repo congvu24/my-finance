@@ -26,7 +26,7 @@ export default function HomeOverview() {
   return (
     <View style={styles.overview}>
       <Text style={styles.welcomeText}>Hello, {userData?.name || ''}</Text>
-      <Text style={styles.subWelcomeText}>Welcome to MyFiance</Text>
+      <Text style={styles.subWelcomeText}>Welcome to My Finance</Text>
       <ImageBackground
         source={OVERVIEW_BG}
         resizeMode="cover"

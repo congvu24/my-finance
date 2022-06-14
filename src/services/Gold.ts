@@ -13,8 +13,9 @@ export async function getGoldPrice() {
   );
   console.log(response);
   const data = response.data.data.map(item => ({
-    x: item[0],
+    x: item[0] / 1000,
     y: item[4],
+    // label: item[4],
   }));
   return data;
 }

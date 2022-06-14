@@ -5,9 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  TouchableWithoutFeedback,
   TouchableNativeFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
 import React, { useState } from 'react';
 import BackArrow from '../components/BackArrow';
@@ -29,6 +29,8 @@ import Toast from 'react-native-root-toast';
 import { useDispatch } from 'react-redux';
 import { addTransaction } from '../redux/reducer/transaction';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { uploadFile } from '../services/Image';
 
 const listType = [
   { key: -1, type: 'Outcome' },
@@ -42,6 +44,7 @@ export default function AddTransactionScreen({ navigation }) {
   const [type, setType] = useState<number>(-1);
   const [showSource, setShowSource] = useState<boolean>(false);
   const [showCategory, setShowCategory] = useState<boolean>(false);
+  const [image, setImage] = useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
@@ -51,6 +54,7 @@ export default function AddTransactionScreen({ navigation }) {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -87,6 +91,7 @@ export default function AddTransactionScreen({ navigation }) {
           amount: parseFloat(data.amount),
           type: type,
           date: finalDate,
+          image: image,
         },
       }),
     );
@@ -94,7 +99,7 @@ export default function AddTransactionScreen({ navigation }) {
 
   const onFinish = handleSubmit(onSubmit);
 
-  const onPressSubmit = () => {
+  const onPressSubmit = async () => {
     if (!_.isEmpty(errors)) {
       Toast.show('Check your fields', {
         duration: Toast.durations.SHORT,
@@ -107,7 +112,13 @@ export default function AddTransactionScreen({ navigation }) {
       });
     }
 
-    onFinish();
+    await onFinish();
+    setImage('');
+    reset();
+  };
+
+  const onPressNext = async () => {
+    await onPressSubmit();
   };
 
   const changeSource = (newSrc: string) => {
@@ -126,6 +137,21 @@ export default function AddTransactionScreen({ navigation }) {
   const onCancelTime = () => {
     setShow(false);
     setMode('date');
+  };
+
+  const pickImage = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+      });
+      if (result.assets && result.assets.length > 0) {
+        const url = await uploadFile(result.assets[0]);
+        setImage(url);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -266,6 +292,7 @@ export default function AddTransactionScreen({ navigation }) {
                 onChangeText={onChange}
                 onBlur={onBlur}
               />
+              <Text>$</Text>
             </View>
           )}
           name="amount"
@@ -284,27 +311,40 @@ export default function AddTransactionScreen({ navigation }) {
                 onBlur={onBlur}
                 value={value}
               />
-              <TouchableOpacity style={styles.addImageBtn}>
+              <TouchableOpacity style={styles.addImageBtn} onPress={pickImage}>
                 <Icon name="camera" style={styles.addImageIcon} />
               </TouchableOpacity>
             </View>
           )}
           name="note"
         />
+
+        {image !== '' && (
+          <View style={styles.imageWrap}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: image,
+              }}
+            />
+          </View>
+        )}
+
+        {showCategory && <SpendingCategory onChange={changeCategory} />}
+        {showSource && <SpendingMoneySource onChange={changeSource} />}
+
         <View style={styles.saveWrap}>
           <MyButton
             text={'Save'}
             style={{ wrap: styles.saveBtn, text: {} }}
             onPress={onPressSubmit}
           />
-          <MyButton
+          {/* <MyButton
             text={'Next'}
+            onPress={onPressNext}
             style={{ wrap: styles.nextBtn, text: { color: WHITE_COLOR } }}
-          />
+          /> */}
         </View>
-
-        {showCategory && <SpendingCategory onChange={changeCategory} />}
-        {showSource && <SpendingMoneySource onChange={changeSource} />}
       </View>
     </SafeAreaView>
   );
@@ -323,9 +363,10 @@ const styles = StyleSheet.create({
   },
   addImageBtn: {
     paddingHorizontal: 10,
+    fontSize: 20,
   },
   addImageIcon: {
-    fontSize: 16,
+    fontSize: 20,
     color: WHITE_COLOR,
   },
   nextBtn: {
@@ -350,7 +391,7 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginVertical: 5,
+    marginVertical: 10,
   },
   inputField: {
     borderBottomWidth: 1,
@@ -360,7 +401,7 @@ const styles = StyleSheet.create({
     borderColor: THIRD_BG_COLOR,
   },
   inputName: {
-    width: 60,
+    width: 80,
     fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
@@ -398,5 +439,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: WHITE_COLOR,
     opacity: 0.7,
+  },
+  imageWrap: {
+    width: '90%',
+    height: 200,
+    maxHeight: 200,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

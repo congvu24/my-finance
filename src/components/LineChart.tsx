@@ -64,7 +64,7 @@ function LineChart({ coin = '1' }) {
       />
       {/* {goldPrice.length > 0 && ( */}
       <VictoryArea
-        data={price?.slice(300, price?.length) ?? []}
+        data={price?.slice(600, price?.length) ?? []}
         style={{
           data: {
             stroke: PRIMARY_COLOR,

@@ -18,7 +18,7 @@ export default function BackArrow({ ...props }) {
 
 const styles = StyleSheet.create({
   icon: {
-    fontSize: 18,
+    fontSize: 20,
     color: WHITE_COLOR,
   },
 });

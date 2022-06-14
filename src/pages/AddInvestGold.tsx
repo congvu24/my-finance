@@ -36,6 +36,8 @@ import {
 } from '../redux/reducer/gold';
 import { DSC_ICO, INC_ICO } from '../contants/Images';
 import formatMoney from '../utils/formatMoney';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { uploadFile } from '../services/Image';
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
@@ -46,6 +48,7 @@ export default function AddInvestGold({ navigation }) {
 
   const [type, setType] = useState(1);
   const [mode, setMode] = useState('date');
+  const [image, setImage] = useState('');
   const [show, setShow] = useState(false);
 
   const createTime = new Date();
@@ -100,6 +103,7 @@ export default function AddInvestGold({ navigation }) {
           price: parseFloat(data.price),
           type: type,
           date: finalDate,
+          image: image,
         },
       }),
     );
@@ -140,6 +144,21 @@ export default function AddInvestGold({ navigation }) {
       dispatch(stopSocket());
     };
   }, []);
+
+  const pickImage = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+      });
+      if (result.assets && result.assets.length > 0) {
+        const url = await uploadFile(result.assets[0]);
+        setImage(url);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.wrap}>
@@ -274,6 +293,7 @@ export default function AddInvestGold({ navigation }) {
                 onChangeText={onChange}
                 onBlur={onBlur}
               />
+              <Text>OZ</Text>
             </View>
           )}
           name="amount"
@@ -294,6 +314,7 @@ export default function AddInvestGold({ navigation }) {
                 onChangeText={onChange}
                 onBlur={onBlur}
               />
+              <Text>$</Text>
             </View>
           )}
           name="price"
@@ -312,23 +333,35 @@ export default function AddInvestGold({ navigation }) {
                 onBlur={onBlur}
                 value={value}
               />
-              <TouchableOpacity style={styles.addImageBtn}>
+              <TouchableOpacity style={styles.addImageBtn} onPress={pickImage}>
                 <Icon name="camera" style={styles.addImageIcon} />
               </TouchableOpacity>
             </View>
           )}
           name="note"
         />
+
+        {image !== '' && (
+          <View style={styles.imageWrap}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: image,
+              }}
+            />
+          </View>
+        )}
+
         <View style={styles.saveWrap}>
           <MyButton
             text={'Save'}
             style={{ wrap: styles.saveBtn, text: {} }}
             onPress={onPressSubmit}
           />
-          <MyButton
+          {/* <MyButton
             text={'Next'}
             style={{ wrap: styles.nextBtn, text: { color: WHITE_COLOR } }}
-          />
+          /> */}
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -452,7 +485,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addImageIcon: {
-    fontSize: 16,
+    fontSize: 20,
   },
   nextBtn: {
     backgroundColor: BLUE_COLOR,
@@ -476,7 +509,7 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginVertical: 5,
+    marginVertical: 10,
     color: WHITE_COLOR,
   },
   inputField: {
@@ -487,7 +520,7 @@ const styles = StyleSheet.create({
     color: WHITE_COLOR,
   },
   inputName: {
-    width: 60,
+    width: 80,
     fontSize: 15,
     fontWeight: '500',
     color: WHITE_COLOR,
@@ -533,5 +566,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: WHITE_COLOR,
+  },
+  imageWrap: {
+    width: '90%',
+    height: 200,
+    maxHeight: 200,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

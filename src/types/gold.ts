@@ -4,4 +4,5 @@ export interface AddInvestGold {
   date: string;
   created_by: string;
   description: string;
+  image: string;
 }

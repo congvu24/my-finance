@@ -5,4 +5,5 @@ export interface CreateTransaction {
   amount: number;
   note: string;
   type: 0 | 1 | -1;
+  image: string;
 }

@@ -6,6 +6,7 @@ import featureReducer from './reducer/feature';
 import transactionReducer from './reducer/transaction';
 import goldReducer from './reducer/gold';
 import coinReducer from './reducer/coin';
+import settingReducer from './reducer/settingSpending';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   persistStore,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   transaction: transactionReducer,
   gold: goldReducer,
   coin: coinReducer,
+  setting: settingReducer,
 });
 
 const persistConfig = {

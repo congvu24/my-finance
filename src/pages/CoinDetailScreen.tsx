@@ -34,6 +34,7 @@ import BackArrow from '../components/BackArrow';
 import MyButton from '../components/Button';
 import LineChart from '../components/LineChart';
 import { getCoinHistoryPriceRedux } from '../redux/reducer/coin';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 function CoinDetailScreen() {
   const dispatch = useDispatch();
@@ -64,6 +65,9 @@ function CoinDetailScreen() {
   }, []);
 
   const price = currentPrice?.[balance.symbol] ?? null;
+  // console.log('dât',price);
+
+  // console.log(price)
 
   return (
     <View style={styles.wrap}>
@@ -72,6 +76,78 @@ function CoinDetailScreen() {
       </View>
       <View style={styles.container}>
         <LineChart coin={currentCoin.coinId} />
+      </View>
+
+      <View style={styles.portfolio}>
+        <Text style={styles.portfolioTitle}>{balance.code} price</Text>
+        <View style={styles.containerPrice}>
+          <View style={styles.priceSection}>
+            {/* <View style={styles.priceWrap}>
+              <Image
+                source={currentPrice?.pc_col === 'redFont' ? DSC_ICO : INC_ICO}
+                style={styles.priceIcon}
+              />
+            </View> */}
+            <Text
+              style={{
+                ...styles.price,
+                color:
+                  currentPrice?.pc_col === 'redFont' ? RED_COLOR : GREEN_COLOR,
+              }}>
+              {formatMoney(price?.c)}
+            </Text>
+            {/* <Text
+              style={{
+                ...styles.priceChange,
+                color:
+                  currentPrice?.pc_col === 'redFont' ? RED_COLOR : GREEN_COLOR,
+              }}>
+              ({formatMoney(currentPrice?.pc)})
+            </Text> */}
+          </View>
+          <View style={styles.timeSection}>
+            <Text style={styles.priceText}>High: </Text>
+            <Text style={styles.priceText}>
+              {parseFloat(price.h).toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.timeSection}>
+            <Text style={styles.priceText}>Low: </Text>
+            <Text style={styles.priceText}>
+              {parseFloat(price.l).toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.timeSection}>
+            <Text style={styles.priceText}>Volumn: </Text>
+            <Text style={styles.priceText}>
+              {parseFloat(price.v).toFixed(2)}
+            </Text>
+          </View>
+          <View style={styles.timeSection}>
+            <Icon
+              name="clockcircleo"
+              style={{ color: WHITE_COLOR, fontWeight: '700' }}
+            />
+            <Text style={styles.time}>
+              {new Date(price?.E).toLocaleTimeString()}
+            </Text>
+            <Text style={styles.timeDescription}>
+              Real-time Data. Currency in USD
+            </Text>
+          </View>
+          {/* <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Open: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.bid}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>High: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.high}</Text>
+          </View>
+          <View style={styles.indicateSection}>
+            <Text style={styles.indicate}>Low: </Text>
+            <Text style={styles.indicateValue}>{currentPrice?.low}</Text>
+          </View> */}
+        </View>
       </View>
 
       <View style={styles.portfolio}>
@@ -378,5 +454,74 @@ const styles = StyleSheet.create({
     // backgroundColor: '#f5fcff',
     // margin: 20,
     // padding: 10,
+  },
+
+  priceSection: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 5,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: GREEN_COLOR,
+    marginRight: 10,
+  },
+  priceChange: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: GREEN_COLOR,
+    opacity: 0.8,
+  },
+  priceWrap: {
+    width: 25,
+    height: 30,
+    marginRight: 5,
+  },
+  priceIcon: {
+    // transform: [{ scale: 0.3 }],
+    aspectRatio: 1,
+    width: '100%',
+    height: undefined,
+  },
+  containerPrice: {
+    padding: 20,
+    marginVertical: 10,
+    marginTop: 20,
+    backgroundColor: SECONDARY_BG_COLOR,
+    borderRadius: 5,
+  },
+
+  dateString: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+    borderBottomWidth: 1,
+    flex: 1,
+    padding: 0,
+    color: WHITE_COLOR,
+    borderColor: THIRD_BG_COLOR,
+  },
+  timeSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 2,
+  },
+  time: {
+    color: WHITE_COLOR,
+    fontWeight: '600',
+    fontSize: 14,
+    marginLeft: 5,
+    opacity: 0.8,
+  },
+  timeDescription: {
+    color: WHITE_COLOR,
+    fontWeight: '400',
+    fontSize: 14,
+    marginLeft: 5,
+    opacity: 0.6,
+  },
+  priceText: {
+    color: WHITE_COLOR,
   },
 });
