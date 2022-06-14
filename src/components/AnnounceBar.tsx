@@ -43,7 +43,10 @@ export default function AnnounceBar() {
     const groupByCategory = _.groupBy(thisMonthTrans, item => item.category);
     // console.log(groupByCategory);
 
-    let listMessage = [];
+    let listMessage = [
+      'Crypto market is extremely down.',
+      'DJI is going to bear market.',
+    ];
     Object.keys(groupByCategory).forEach(key => {
       let category = setting.find(item => item.categoryName == key);
       let sum = groupByCategory[key].reduce(
